@@ -33,7 +33,7 @@
 - Ha Meghívtak egy új eseményre
 
 ## Forstner Bertalan előzetes terve: 
-[20220217152349725.pdf](https://github.com/Matyi98/MSc-Onlab1/files/8111610/20220217152349725.pdf)
+![389200c424264cfcb8752a3b25553d7f-0001](https://user-images.githubusercontent.com/61094345/155015046-e7286749-8a83-4a2b-a5ae-b8e4d3d2da70.jpg)
 
 Néhány dolog, amit másként csinálnék:
 - Csak regisztrált személyeket adnék hozzá a családokhoz (tehát nem úgy, hogy először felveszem, bekerül a rendszerbe, majd meghívót küldök neki és végül ha regisztrált, összekapcsolom a kettőt)
