@@ -8,3 +8,5 @@ A téma célja egy olyan mobil kliens-szerver alkalmazás mobil kliensének, ill
 - Értesítések
 
 A téma magában foglalja az adamodell, kommunikációs protokoll, szerver oldali végpontok tervezését és megvalósítását, illetve mobil oldalon alkalmazás architektúra tervezés és megvalósítását, képernyőtervek alapján UI készítését is.
+
+Bővebb specifikáció frontendről: [Frontend specifikáció](https://github.com/Matyi98/MSc-Onlab1/tree/main/Android-Studio).
