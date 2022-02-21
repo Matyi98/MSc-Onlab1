@@ -32,3 +32,12 @@
 - Ha meghívtak egy új családba
 - Ha Meghívtak egy új eseményre
 
+## Forstner Bertalan előzetes terve: 
+[20220217152349725.pdf](https://github.com/Matyi98/MSc-Onlab1/files/8111610/20220217152349725.pdf)
+
+Néhány dolog, amit másként csinálnék:
+- Csak regisztrált személyeket adnék hozzá a családokhoz (tehát nem úgy, hogy először felveszem, bekerül a rendszerbe, majd meghívót küldök neki és végül ha regisztrált, összekapcsolom a kettőt)
+- Családtagokat nem kategorizáltam
+- Egyszerre több családhoz való tartozást is lehetővé tenném (pl. nagyszülőknek jól jöhet, vagy ha haverokkal is akarsz egy "családot")
+
+
