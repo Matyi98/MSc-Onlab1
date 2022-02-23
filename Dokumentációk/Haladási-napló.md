@@ -1,4 +1,6 @@
-# Haladási napló
+# Matyi
+## Haladási napló
+### 2.-ik hétre
 
 Egyeztettem Ádámmal, kialakítottuk a közös kommunikációs csatornákat. Beléptem a közös discord szerverre, Trelloba illetve létrehoztam a GitHub repositorymat. Ebben a Repositoryban jelenelg egy kiinduló Android projekt van, illetve a dokumentációk.
 
