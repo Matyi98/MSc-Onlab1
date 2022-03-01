@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FamilyOrganiser">
         <activity
-            android:name=".MainActivity"
+            android:name = "hu.matyi.familyorganiser.views.loginForm.LoginActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.FamilyOrganiser.NoActionBar">
@@ -20,6 +20,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".views.registerForm.RegisterActivity"
+            android:exported="true"
+            >
+            <!--Default Intent Filter-->
+            <intent-filter>
+                <action android:name="android.intent.action.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".views.familyMenu.familyMenu"
+            android:exported="true"
+            >
+            <!--Default Intent Filter-->
+            <intent-filter>
+                <action android:name="android.intent.action.DEFAULT" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
