@@ -60,6 +60,7 @@ fun RegisterScreen3() {
                     .weight(0.5f)
                     .fillMaxWidth()
             )
+
             Card(
                 Modifier
                     .weight(2f)
@@ -72,6 +73,7 @@ fun RegisterScreen3() {
                         .background(Color(R.color.teal_700))
                         .fillMaxSize()
                         .padding(32.dp)) {
+                    //welcomText(text = stringResource(R.string.familymenu_welcome_text))
                     welcomText(text = stringResource(R.string.familymenu_welcome_text))
                     val familyCode = basicInputField(text = stringResource(R.string.familyCode))
                     Button(
@@ -89,7 +91,6 @@ fun RegisterScreen3() {
                     }
                     val intent = Intent(context, CreateFamilyActivity::class.java)
                     basicButton(context = context, text = stringResource(R.string.familyCreate_button_text), intent)
-
                 }
             }
         }

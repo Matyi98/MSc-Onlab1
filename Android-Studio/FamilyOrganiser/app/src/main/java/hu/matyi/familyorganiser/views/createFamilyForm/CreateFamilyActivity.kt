@@ -1,5 +1,6 @@
 package hu.matyi.familyorganiser.views.createFamilyForm
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -28,10 +29,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hu.matyi.familyorganiser.R
+import hu.matyi.familyorganiser.components.basicButton
 import hu.matyi.familyorganiser.components.basicInputField
 import hu.matyi.familyorganiser.components.imagePicker
 import hu.matyi.familyorganiser.components.welcomText
 import hu.matyi.familyorganiser.ui.theme.FamilyOrganiserTheme
+import hu.matyi.familyorganiser.views.familyMainView.familyMainView
+import hu.matyi.familyorganiser.views.familyMenu.FamilyMenuActivity
 
 class CreateFamilyActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +77,8 @@ fun RegisterScreen4() {
                     randomTextInputField(stringResource(R.string.familyCode))
                     basicInputField(text = stringResource(R.string.family_name))
                     imagePicker()
-                    basicInputField(text = "create",)
+                    val familyMainMenuIntent = Intent(context, familyMainView::class.java)
+                    basicButton(context = context, text = "Create", familyMainMenuIntent)
                 }
             }
         }
