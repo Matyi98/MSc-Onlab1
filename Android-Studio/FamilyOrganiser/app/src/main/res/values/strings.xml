@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">FamilyOrganiser</string>
+    <string name="Registrate">Registrate</string>
+    <string name="registrate">Registrate</string>
+    <string name="registrate_welcome_text">Let\'s registrate!</string>
+    <string name="login_welcome_text">Welcom!</string>
+    <string name="login_button_text">Log in</string>
+    <string name="registrate_button_text">Not yet registered?</string>
+    <string name="familymenu_welcome_text">You are not yet a member of any family!</string>
+    <string name="username">Username</string>
+    <string name="familyCode">Family Code</string>
+    <string name="familyCreate_button_text">Create your family</string>
+    <string name="create_family_welcome_text">Fill out the family\'s data</string>
+    <string name="family_name">Family name</string>
+    <string name="pick_image">Pick image</string>
 </resources>

@@ -2,33 +2,28 @@ package hu.matyi.familyorganiser.views.registerForm
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.EditText
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import hu.matyi.familyorganiser.R
+import hu.matyi.familyorganiser.components.basicButton
+import hu.matyi.familyorganiser.components.passwordField
+import hu.matyi.familyorganiser.components.basicInputField
+import hu.matyi.familyorganiser.components.welcomText
 import hu.matyi.familyorganiser.ui.theme.FamilyOrganiserTheme
+import hu.matyi.familyorganiser.views.loginForm.LoginActivity
 
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +38,7 @@ class RegisterActivity : ComponentActivity() {
 
 @Composable
 fun RegisterScreen2() {
+    val context = LocalContext.current
     Scaffold(backgroundColor = Color.White)
     {
         Column(
@@ -54,7 +50,8 @@ fun RegisterScreen2() {
                 id = R.drawable.register),
                 contentDescription = "App Theme",
                 modifier = Modifier
-                    .fillMaxWidth().weight(1f)
+                    .fillMaxWidth()
+                    .weight(0.5f)
             )
             Card(
                 Modifier
@@ -69,63 +66,11 @@ fun RegisterScreen2() {
                         .fillMaxSize()
                         .padding(32.dp)) {
 
-                    Text(text = "Let's registrate!",
-                        fontWeight = FontWeight.Bold,
-                        fontSize =  25.sp,
-                        modifier = Modifier.fillMaxWidth().padding(20.dp).fillMaxWidth(),
-                        color = Color.White)
-                    var username by rememberSaveable { mutableStateOf("") }
-                    TextField(
-                        value =username ,
-                        onValueChange = {username = it},
-                        modifier = Modifier.fillMaxWidth().padding(20.dp).fillMaxWidth(),
-                        label = { Text(text = "Username", fontSize = 25.sp) },
-                        trailingIcon =
-                        {
-                            IconButton(onClick = {})
-                        {
-                            Icon(imageVector = Icons.Filled.Clear, contentDescription = "")
-                        }
-                        })
-                    var password by rememberSaveable { mutableStateOf("") }
-                    TextField(
-                        value = password,
-                        onValueChange = {password = it},
-                        enabled = true,
-                        modifier = Modifier.fillMaxWidth().padding(20.dp),
-                        label = { Text(text = "Password", fontSize = 25.sp) },
-                        trailingIcon =
-                        {
-                            IconButton(onClick = {})
-                        {
-                            Icon(imageVector = Icons.Filled.Clear, contentDescription = "")
-                        }
-                        })
-                    TextField(
-                        value = password,
-                        onValueChange = {password = it},
-                        enabled = true,
-                        modifier = Modifier.fillMaxWidth().padding(20.dp),
-                        label = { Text(text = "Password(2)", fontSize = 25.sp) },
-                        trailingIcon =
-                        {
-                            IconButton(onClick = {})
-                            {
-                                Icon(imageVector = Icons.Filled.Clear, contentDescription = "")
-                            }
-                        })
-                    Button(
-                        onClick = {
-                        },
-                        modifier = Modifier.fillMaxWidth().padding(20.dp),
-                        enabled = true,
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue),
-                        //border = BorderStroke(width = 0.dp, brush = SolidColor(Color.Blue)),
-                        //shape = MaterialTheme.shapes.medium,
-                    )
-                    {
-                        Text(text = "Registrate", color = Color.White)
-                    }
+                    welcomText(text = stringResource(R.string.registrate_welcome_text))
+                    var username = basicInputField(stringResource(R.string.username))
+                    var password = passwordField()
+                    val intent = Intent(context, LoginActivity::class.java)
+                    basicButton(context = LocalContext.current, text =  stringResource(R.string.registrate), intent)
 
                 }
             }

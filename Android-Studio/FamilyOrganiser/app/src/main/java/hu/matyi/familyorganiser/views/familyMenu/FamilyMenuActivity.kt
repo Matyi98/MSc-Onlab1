@@ -23,15 +23,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hu.matyi.familyorganiser.R
+import hu.matyi.familyorganiser.components.basicButton
+import hu.matyi.familyorganiser.components.basicInputField
+import hu.matyi.familyorganiser.components.welcomText
 import hu.matyi.familyorganiser.ui.theme.FamilyOrganiserTheme
-import hu.matyi.familyorganiser.views.loginForm.RegisterScreen
+import hu.matyi.familyorganiser.views.createFamilyForm.CreateFamilyActivity
+import hu.matyi.familyorganiser.views.loginForm.LoginActivity
 import hu.matyi.familyorganiser.views.registerForm.RegisterActivity
 
-class familyMenu : ComponentActivity() {
+class FamilyMenuActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -53,7 +57,8 @@ fun RegisterScreen3() {
                 id = R.drawable.family),
                 contentDescription = "App Theme",
                 modifier = Modifier
-                    .weight(0.5f).fillMaxWidth()
+                    .weight(0.5f)
+                    .fillMaxWidth()
             )
             Card(
                 Modifier
@@ -67,31 +72,14 @@ fun RegisterScreen3() {
                         .background(Color(R.color.teal_700))
                         .fillMaxSize()
                         .padding(32.dp)) {
-
-                    Text(text = "You are not yet a member of any family!",
-                        fontWeight = FontWeight.Bold,
-                        fontSize =  25.sp,
-                        modifier = Modifier.fillMaxWidth().padding(30.dp).fillMaxWidth(),
-                        color = Color.White)
-                    var username by rememberSaveable { mutableStateOf("") }
-                    var familySecretCode by rememberSaveable { mutableStateOf("") }
-                    TextField(
-                        value = familySecretCode,
-                        onValueChange = {familySecretCode = it},
-                        enabled = true,
-                        modifier = Modifier.fillMaxWidth().padding(20.dp),
-                        label = { Text(text = "Family code:", fontSize = 25.sp) },
-                        trailingIcon =
-                        {
-                            IconButton(onClick = {})
-                        {
-                            Icon(imageVector = Icons.Filled.Clear, contentDescription = "")
-                        }
-                        })
+                    welcomText(text = stringResource(R.string.familymenu_welcome_text))
+                    val familyCode = basicInputField(text = stringResource(R.string.familyCode))
                     Button(
                         onClick = {
                         },
-                        modifier = Modifier.fillMaxWidth().padding(20.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp),
                         enabled = true,
                         border = BorderStroke(width = 1.dp, brush = SolidColor(Color.Blue)),
                         shape = MaterialTheme.shapes.medium,
@@ -99,20 +87,8 @@ fun RegisterScreen3() {
                     {
                         Text(text = "Join", color = Color.White)
                     }
-                    Button(
-                        onClick = {
-                            val intent = Intent(context, RegisterActivity::class.java)
-                            context.startActivity(intent)
-                        },
-                        modifier = Modifier.fillMaxWidth().padding(20.dp),
-                        enabled = true,
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color(R.color.teal_700)),
-                        //border = BorderStroke(width = 0.dp, brush = SolidColor(Color.Blue)),
-                        //shape = MaterialTheme.shapes.medium,
-                    )
-                    {
-                        Text(text = "Create your family", color = Color.White)
-                    }
+                    val intent = Intent(context, CreateFamilyActivity::class.java)
+                    basicButton(context = context, text = stringResource(R.string.familyCreate_button_text), intent)
 
                 }
             }
