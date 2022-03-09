@@ -69,6 +69,7 @@ fun RegisterScreen2() {
                     welcomText(text = stringResource(R.string.registrate_welcome_text))
                     var username = basicInputField(stringResource(R.string.username))
                     var password = passwordField()
+                    var password2 = passwordField()
                     val intent = Intent(context, LoginActivity::class.java)
                     basicButton(context = LocalContext.current, text =  stringResource(R.string.registrate), intent)
 

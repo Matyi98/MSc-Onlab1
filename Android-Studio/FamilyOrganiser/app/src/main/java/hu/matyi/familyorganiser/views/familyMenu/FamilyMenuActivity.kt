@@ -57,10 +57,9 @@ fun RegisterScreen3() {
                 id = R.drawable.family),
                 contentDescription = "App Theme",
                 modifier = Modifier
-                    .weight(0.5f)
+                    .weight(1f)
                     .fillMaxWidth()
             )
-
             Card(
                 Modifier
                     .weight(2f)

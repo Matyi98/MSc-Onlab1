@@ -1,39 +1,41 @@
 package hu.matyi.familyorganiser.views.familyMainView
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hu.matyi.familyorganiser.R
-import hu.matyi.familyorganiser.components.basicButton
-import hu.matyi.familyorganiser.components.basicInputField
 import hu.matyi.familyorganiser.components.welcomText
 import hu.matyi.familyorganiser.ui.theme.FamilyOrganiserTheme
-import hu.matyi.familyorganiser.views.createFamilyForm.CreateFamilyActivity
+import android.graphics.Bitmap
+import java.util.*
+import android.content.Context
+import android.graphics.BitmapFactory
+import android.util.Base64
+import androidx.compose.ui.graphics.asImageBitmap
+import java.io.*
+import java.lang.Exception
 
-class familyMainView: ComponentActivity()  {
+
+class FamilyMainView: ComponentActivity()  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             FamilyOrganiserTheme {
+
                 RegisterScreen4()
             }
         }
@@ -98,27 +100,27 @@ fun RegisterScreen4() {
                         .fillMaxSize()
                         .padding(32.dp)
                 ) {
-                    welcomText(text = stringResource(R.string.familymenu_welcome_text))
-                    val familyCode = basicInputField(text = stringResource(R.string.familyCode))
-                    Button(
-                        onClick = {
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
-                        enabled = true,
-                        border = BorderStroke(width = 1.dp, brush = SolidColor(Color.Blue)),
-                        shape = MaterialTheme.shapes.medium,
-                    )
-                    {
-                        Text(text = "Join", color = Color.White)
+                    welcomText(text = stringResource(R.string.Hello))
+
+                        var file = File(context.filesDir,"familyPhoto")
+                        var StringToBitMap : String =
+                        file.inputStream().readBytes().toString(Charsets.UTF_8)
+                        val bitmap = StringToBitMap(StringToBitMap)
+                    if (bitmap != null) {
+                        Card(
+                            Modifier
+                                .weight(0.5f)
+                                .padding(8.dp),
+                            shape = RoundedCornerShape(32.dp)
+                        )
+                        {
+                            Image(
+                                bitmap = bitmap.asImageBitmap(),
+                                contentDescription = null,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
                     }
-                    val intent = Intent(context, CreateFamilyActivity::class.java)
-                    basicButton(
-                        context = context,
-                        text = stringResource(R.string.familyCreate_button_text),
-                        intent
-                    )
                 }
 
             }
@@ -139,3 +141,48 @@ fun memberListTitle() {
         color = Color.White
     )
 }
+
+//https://www.android--code.com/2020/06/android-kotlin-bitmap-to-base64-string.html
+public fun Context.assetsToBitmap(fileName:String):Bitmap?{
+    return try {
+        val stream = assets.open(fileName)
+        BitmapFactory.decodeStream(stream)
+    } catch (e: IOException) {
+        e.printStackTrace()
+        null
+    }
+}
+
+fun StringToBitMap(encodedString: String?): Bitmap? {
+    return try {
+        val encodeByte =
+            Base64.decode(encodedString, Base64.DEFAULT)
+        BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size)
+    } catch (e: Exception) {
+        e.message
+        null
+    }
+}
+
+/*private fun readFromFile(fileName: String, context: Context): InputStream? {
+    var ret = ""
+    //try {
+        val inputStream: InputStream? = context.openFileInput(fileName)
+        if (inputStream != null) {
+            val inputStreamReader = InputStreamReader(inputStream)
+            val bufferedReader = BufferedReader(inputStreamReader)
+            var receiveString: String? = ""
+            val stringBuilder = StringBuilder()
+            while (bufferedReader.readLine().also { receiveString = it } != null) {
+                stringBuilder.append("\n").append(receiveString)
+           // }
+            /*inputStream.close()
+            ret = stringBuilder.toString()
+        }
+    } catch (e: FileNotFoundException) {
+        Log.e("login activity", "File not found: $e")
+    } catch (e: IOException) {
+        Log.e("login activity", "Can not read file: $e")*/
+    }
+    return inputStream
+}*/
