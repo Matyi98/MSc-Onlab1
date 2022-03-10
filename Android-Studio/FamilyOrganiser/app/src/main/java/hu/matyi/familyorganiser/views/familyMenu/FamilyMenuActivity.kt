@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import hu.matyi.familyorganiser.R
 import hu.matyi.familyorganiser.components.basicButton
 import hu.matyi.familyorganiser.components.basicInputField
+import hu.matyi.familyorganiser.components.noEffectButton
 import hu.matyi.familyorganiser.components.welcomText
 import hu.matyi.familyorganiser.ui.theme.FamilyOrganiserTheme
 import hu.matyi.familyorganiser.views.createFamilyForm.CreateFamilyActivity
@@ -75,19 +76,7 @@ fun RegisterScreen3() {
                     //welcomText(text = stringResource(R.string.familymenu_welcome_text))
                     welcomText(text = stringResource(R.string.familymenu_welcome_text))
                     val familyCode = basicInputField(text = stringResource(R.string.familyCode))
-                    Button(
-                        onClick = {
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
-                        enabled = true,
-                        border = BorderStroke(width = 1.dp, brush = SolidColor(Color.Blue)),
-                        shape = MaterialTheme.shapes.medium,
-                    )
-                    {
-                        Text(text = "Join", color = Color.White)
-                    }
+                    noEffectButton("Join")
                     val intent = Intent(context, CreateFamilyActivity::class.java)
                     basicButton(context = context, text = stringResource(R.string.familyCreate_button_text), intent)
                 }
@@ -95,6 +84,8 @@ fun RegisterScreen3() {
         }
     }
 }
+
+
 
 
 

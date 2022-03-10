@@ -21,11 +21,12 @@ import hu.matyi.familyorganiser.R
 import hu.matyi.familyorganiser.components.welcomText
 import hu.matyi.familyorganiser.ui.theme.FamilyOrganiserTheme
 import android.graphics.Bitmap
-import java.util.*
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.util.Base64
 import androidx.compose.ui.graphics.asImageBitmap
+import hu.matyi.familyorganiser.components.basicButton
+import hu.matyi.familyorganiser.components.noEffectButton
 import java.io.*
 import java.lang.Exception
 
@@ -89,8 +90,9 @@ fun RegisterScreen4() {
             }
             Card(
                 Modifier
-                    .weight(2f)
+                    .weight(2.3f)
                     .padding(8.dp),
+
                 shape = RoundedCornerShape(32.dp)
             )
             {
@@ -101,26 +103,21 @@ fun RegisterScreen4() {
                         .padding(32.dp)
                 ) {
                     welcomText(text = stringResource(R.string.Hello))
-
-                        var file = File(context.filesDir,"familyPhoto")
-                        var StringToBitMap : String =
+                    noEffectButton(text = "Shopping")
+                    noEffectButton(text = "Events")
+                    var file = File(context.filesDir,"familyPhoto")
+                    var stringToBitmap : String =
                         file.inputStream().readBytes().toString(Charsets.UTF_8)
-                        val bitmap = StringToBitMap(StringToBitMap)
+                    val bitmap = StringToBitMap(stringToBitmap)
                     if (bitmap != null) {
-                        Card(
-                            Modifier
-                                .weight(0.5f)
-                                .padding(8.dp),
-                            shape = RoundedCornerShape(32.dp)
-                        )
-                        {
                             Image(
                                 bitmap = bitmap.asImageBitmap(),
                                 contentDescription = null,
                                 modifier = Modifier.fillMaxSize()
                             )
-                        }
+
                     }
+
                 }
 
             }
