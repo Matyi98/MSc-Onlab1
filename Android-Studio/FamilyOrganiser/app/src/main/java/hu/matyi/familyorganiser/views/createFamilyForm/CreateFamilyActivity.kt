@@ -21,19 +21,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hu.matyi.familyorganiser.R
-import hu.matyi.familyorganiser.components.basicButton
-import hu.matyi.familyorganiser.components.basicInputField
-import hu.matyi.familyorganiser.components.imagePicker
-import hu.matyi.familyorganiser.components.welcomText
+import hu.matyi.familyorganiser.components.*
 import hu.matyi.familyorganiser.ui.theme.FamilyOrganiserTheme
 import hu.matyi.familyorganiser.views.familyMainView.FamilyMainView
-import android.content.SharedPreferences
-import android.graphics.Bitmap
-import android.view.View
-import androidx.core.content.edit
-import android.preference.PreferenceManager
-import android.util.Base64
-import java.io.ByteArrayOutputStream
 
 
 class CreateFamilyActivity : ComponentActivity() {
@@ -41,14 +31,14 @@ class CreateFamilyActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FamilyOrganiserTheme {
-                RegisterScreen4()
+                Screen()
             }
         }
     }
 }
 
 @Composable
-fun RegisterScreen4() {
+private fun Screen() {
     val context = LocalContext.current
     Scaffold(backgroundColor = Color.White)
     {
@@ -76,9 +66,6 @@ fun RegisterScreen4() {
                     val familyCode = randomTextInputField(stringResource(R.string.familyCode))
                     val familyName = basicInputField(text = stringResource(R.string.family_name))
                     val image = imagePicker()
-
-
-
                     val familyMainMenuIntent = Intent(context, FamilyMainView::class.java)
                     familyMainMenuIntent.putExtra("FamilyName",familyName)
                     familyMainMenuIntent.putExtra("FamilyCode",familyCode)
@@ -87,35 +74,5 @@ fun RegisterScreen4() {
             }
         }
     }
-}
-
-@Composable
- fun randomTextInputField(text: String) : String {
-    var code by rememberSaveable { mutableStateOf("") }
-    TextField(
-        value = code,
-        onValueChange = {  },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(20.dp)
-            .fillMaxWidth(),
-        label = { Text(text = text, fontSize = 25.sp) },
-        trailingIcon =
-        {
-            IconButton(onClick = {
-                code = getRandomString(10)
-            })
-            {
-                Icon(imageVector = Icons.Filled.Redo , contentDescription = "")
-            }
-        })
-    return code
-}
-
-fun getRandomString(length: Int) : String {
-    val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
-    return (1..length)
-        .map { allowedChars.random() }
-        .joinToString("")
 }
 

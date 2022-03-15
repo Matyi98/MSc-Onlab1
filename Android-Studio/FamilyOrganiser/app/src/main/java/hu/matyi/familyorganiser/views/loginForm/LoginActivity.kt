@@ -30,13 +30,13 @@ class LoginActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FamilyOrganiserTheme {
-                RegisterScreen()
+                Screen()
             }
             }
         }
     }
    @Composable
-   fun RegisterScreen() {
+   private fun Screen() {
        val context = LocalContext.current
        Scaffold(backgroundColor = Color.White)
        {

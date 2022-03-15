@@ -37,7 +37,7 @@ class FamilyMainView: ComponentActivity()  {
         setContent {
             FamilyOrganiserTheme {
 
-                RegisterScreen4()
+                Screen()
             }
         }
     }
@@ -45,7 +45,7 @@ class FamilyMainView: ComponentActivity()  {
 }
 
 @Composable
-fun RegisterScreen4() {
+private fun Screen() {
     val context = LocalContext.current
     Scaffold(backgroundColor = Color.White)
     {

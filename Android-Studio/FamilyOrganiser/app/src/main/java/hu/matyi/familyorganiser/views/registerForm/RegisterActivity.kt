@@ -30,14 +30,14 @@ class RegisterActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FamilyOrganiserTheme {
-                RegisterScreen2()
+                Screen()
             }
         }
     }
 }
 
 @Composable
-fun RegisterScreen2() {
+private fun Screen() {
     val context = LocalContext.current
     Scaffold(backgroundColor = Color.White)
     {

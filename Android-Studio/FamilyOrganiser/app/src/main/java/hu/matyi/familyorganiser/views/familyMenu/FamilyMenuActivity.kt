@@ -41,14 +41,14 @@ class FamilyMenuActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FamilyOrganiserTheme {
-                RegisterScreen3()
+                Screen()
             }
         }
     }
 }
 
 @Composable
-fun RegisterScreen3() {
+private fun Screen() {
     val context = LocalContext.current
     Scaffold(backgroundColor = Color.White)
     {
