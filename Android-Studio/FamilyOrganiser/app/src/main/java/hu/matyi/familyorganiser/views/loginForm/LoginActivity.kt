@@ -26,17 +26,18 @@ import hu.matyi.familyorganiser.views.registerForm.RegisterActivity
 
 //https://www.youtube.com/watch?v=SZR04TKHDM4&t=257s
 class LoginActivity : ComponentActivity() {
+    private var loginHandler : LoginHandler = LoginHandler()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             FamilyOrganiserTheme {
-                Screen()
+                Screen(loginHandler)
             }
             }
         }
     }
    @Composable
-   private fun Screen() {
+   private fun Screen(loginHandler: LoginHandler) {
        val context = LocalContext.current
        Scaffold(backgroundColor = Color.White)
        {
@@ -62,10 +63,10 @@ class LoginActivity : ComponentActivity() {
                            .padding(32.dp)) {
 
                        welcomText(stringResource(R.string.login_welcome_text))
-                       var username = basicInputField(stringResource(R.string.username))
-                       var password = passwordField()
+                       loginHandler.setUsername(basicInputField(stringResource(R.string.username)))
+                       loginHandler.setPassword(passwordField())
                        val intent1 = Intent(context, FamilyMenuActivity::class.java)
-                       basicButton(context, stringResource(R.string.login_button_text), intent1)
+                       basicButton(context, stringResource(R.string.login_button_text), intent1) { loginHandler.sendLoginRequest() }
                        val intent2 = Intent(context, RegisterActivity::class.java )
                        secondOptionButton(context, stringResource(R.string.registrate_button_text),intent2)
 

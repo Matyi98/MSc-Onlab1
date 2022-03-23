@@ -16,10 +16,12 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun basicButton(context: Context, text: String, intent: Intent) {
+fun basicButton(context: Context, text: String, intent: Intent, check: () -> Boolean = {true}) {
     Button(
         onClick = {
-            context.startActivity(intent)
+            if(check()) {
+                context.startActivity(intent)
+            }
         },
         modifier = Modifier
             .fillMaxWidth()

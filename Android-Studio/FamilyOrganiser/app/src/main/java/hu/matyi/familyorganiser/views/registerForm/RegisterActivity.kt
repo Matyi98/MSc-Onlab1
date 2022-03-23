@@ -71,7 +71,7 @@ private fun Screen() {
                     var password = passwordField()
                     var password2 = passwordField()
                     val intent = Intent(context, LoginActivity::class.java)
-                    basicButton(context = LocalContext.current, text =  stringResource(R.string.registrate), intent)
+                    basicButton(context = LocalContext.current, text =  stringResource(R.string.registrate), intent) {true}
 
                 }
             }
