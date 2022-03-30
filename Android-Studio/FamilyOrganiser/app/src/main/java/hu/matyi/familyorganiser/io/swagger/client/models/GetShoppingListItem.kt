@@ -11,22 +11,21 @@
 */
 package io.swagger.client.models
 
-import io.swagger.client.models.ShoppingListItemPlain
 
 /**
  * 
- * @param completed 
- * @param familyId 
- * @param fullPrice 
+ * @param amount 
  * @param id 
- * @param items 
+ * @param price 
+ * @param product 
+ * @param shoppingListId 
  */
-data class ShoppingListGet (
-    val completed: kotlin.Boolean,
-    val familyId: kotlin.Long,
-    val fullPrice: kotlin.Int,
+data class GetShoppingListItem (
+    val amount: kotlin.Int,
     val id: kotlin.Long,
-    val items: kotlin.Array<ShoppingListItemPlain>? = null
+    val price: kotlin.Int,
+    val product: kotlin.String,
+    val shoppingListId: kotlin.Long
 ) {
 
 }

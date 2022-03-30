@@ -14,26 +14,20 @@ package io.swagger.client.models
 
 /**
  * 
- * @param birthDate 
- * @param email 
- * @param familyId 
- * @param id 
- * @param lastName 
- * @param photo 
  * @param surname 
- * @param uid 
- * @param username 
+ * @param lastName 
+ * @param email 
+ * @param photo 
+ * @param birthDate 
+ * @param familyId 
  */
-data class FamilyMemberPlain (
-    val email: kotlin.String,
-    val id: kotlin.Long,
-    val lastName: kotlin.String,
+data class CreateFamilyMember (
     val surname: kotlin.String,
-    val uid: kotlin.String,
-    val birthDate: java.time.LocalDateTime? = null,
-    val familyId: kotlin.Long? = null,
+    val lastName: kotlin.String,
+    val email: kotlin.String,
     val photo: kotlin.String? = null,
-    val username: kotlin.String? = null
+    val birthDate: java.time.LocalDate? = null,
+    val familyId: kotlin.Long? = null
 ) {
 
 }

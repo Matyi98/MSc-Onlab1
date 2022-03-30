@@ -14,16 +14,12 @@ package io.swagger.client.models
 
 /**
  * 
- * @param amount 
- * @param price 
- * @param product 
- * @param shoppingListId 
+ * @param familyId 
+ * @param location 
  */
-data class CreateShoppingListItem (
-    val amount: kotlin.Int,
-    val price: kotlin.Int,
-    val product: kotlin.String,
-    val shoppingListId: kotlin.Long
+data class CreateShoppingList (
+    val location: kotlin.String,
+    val familyId: kotlin.Long? = null
 ) {
 
 }

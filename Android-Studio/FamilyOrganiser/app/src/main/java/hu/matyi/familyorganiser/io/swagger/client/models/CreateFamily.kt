@@ -14,12 +14,14 @@ package io.swagger.client.models
 
 /**
  * 
+ * @param name 
  * @param headId 
  * @param memberIds 
- * @param name 
+ * @param code 
  */
 data class CreateFamily (
     val name: kotlin.String,
+    val code: kotlin.String,
     val headId: kotlin.Long? = null,
     val memberIds: kotlin.Array<kotlin.Long>? = null
 ) {

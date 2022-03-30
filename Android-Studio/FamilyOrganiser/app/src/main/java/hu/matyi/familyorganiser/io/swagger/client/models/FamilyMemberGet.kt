@@ -11,25 +11,30 @@
 */
 package io.swagger.client.models
 
+import io.swagger.client.models.FamilyPlain
 
 /**
  * 
  * @param birthDate 
  * @param email 
- * @param familyId 
+ * @param family 
+ * @param id 
  * @param lastName 
  * @param photo 
  * @param surname 
  * @param uid 
+ * @param username 
  */
-data class CreateFamilyMember (
+data class FamilyMemberGet (
     val email: kotlin.String,
+    val id: kotlin.Long,
     val lastName: kotlin.String,
     val surname: kotlin.String,
     val uid: kotlin.String,
-    val birthDate: java.time.LocalDateTime? = null,
-    val familyId: kotlin.Long? = null,
-    val photo: kotlin.String? = null
+    val birthDate: java.time.LocalDate? = null,
+    val family: FamilyPlain? = null,
+    val photo: kotlin.String? = null,
+    val username: kotlin.String? = null
 ) {
 
 }

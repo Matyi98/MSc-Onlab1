@@ -24,6 +24,7 @@ import hu.matyi.familyorganiser.components.basicInputField
 import hu.matyi.familyorganiser.components.welcomText
 import hu.matyi.familyorganiser.ui.theme.FamilyOrganiserTheme
 import hu.matyi.familyorganiser.views.loginForm.LoginActivity
+import hu.matyi.familyorganiser.views.loginForm.LoginHandler
 
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,7 +72,7 @@ private fun Screen() {
                     var password = passwordField()
                     var password2 = passwordField()
                     val intent = Intent(context, LoginActivity::class.java)
-                    basicButton(context = LocalContext.current, text =  stringResource(R.string.registrate), intent) {true}
+                    basicButton(context = LocalContext.current, text =  stringResource(R.string.registrate), intent) { RegistrationHandler(username, password).sendRegistrationRequest() }
 
                 }
             }

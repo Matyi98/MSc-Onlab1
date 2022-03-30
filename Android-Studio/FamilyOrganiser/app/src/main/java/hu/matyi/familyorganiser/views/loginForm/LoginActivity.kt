@@ -26,18 +26,17 @@ import hu.matyi.familyorganiser.views.registerForm.RegisterActivity
 
 //https://www.youtube.com/watch?v=SZR04TKHDM4&t=257s
 class LoginActivity : ComponentActivity() {
-    private var loginHandler : LoginHandler = LoginHandler()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             FamilyOrganiserTheme {
-                Screen(loginHandler)
+                Screen()
             }
             }
         }
     }
    @Composable
-   private fun Screen(loginHandler: LoginHandler) {
+   private fun Screen() {
        val context = LocalContext.current
        Scaffold(backgroundColor = Color.White)
        {
@@ -47,7 +46,7 @@ class LoginActivity : ComponentActivity() {
                     id = R.drawable.family),
                     contentDescription = "App Theme",
                     modifier = Modifier
-                        .weight(1f).fillMaxWidth()
+                        .weight(0.5f).fillMaxWidth()
                 )
                Card(
                    Modifier
@@ -63,13 +62,12 @@ class LoginActivity : ComponentActivity() {
                            .padding(32.dp)) {
 
                        welcomText(stringResource(R.string.login_welcome_text))
-                       loginHandler.setUsername(basicInputField(stringResource(R.string.username)))
-                       loginHandler.setPassword(passwordField())
+                       val username = basicInputField(stringResource(R.string.username))
+                       val password = passwordField()
                        val intent1 = Intent(context, FamilyMenuActivity::class.java)
-                       basicButton(context, stringResource(R.string.login_button_text), intent1) { loginHandler.sendLoginRequest() }
+                       basicButton(context, stringResource(R.string.login_button_text), intent1) { LoginHandler(username,password).sendLoginRequest() }
                        val intent2 = Intent(context, RegisterActivity::class.java )
                        secondOptionButton(context, stringResource(R.string.registrate_button_text),intent2)
-
                    }
                }
            }

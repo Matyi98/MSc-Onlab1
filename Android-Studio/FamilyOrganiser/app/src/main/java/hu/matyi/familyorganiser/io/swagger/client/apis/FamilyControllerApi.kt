@@ -11,25 +11,22 @@
 */
 package io.swagger.client.apis
 
-import io.swagger.client.models.CreateFamilyMember
-import io.swagger.client.models.FamilyMemberGet
-import io.swagger.client.models.FamilyMemberPlain
-import io.swagger.client.models.LoginDTO
-import io.swagger.client.models.Tokens
+import io.swagger.client.models.CreateFamily
+import io.swagger.client.models.FamilyPlain
 
 import io.swagger.client.infrastructure.*
 
-class FamilyMemberControllersApi(basePath: kotlin.String = "http://10.0.2.2:8050") : ApiClient(basePath) {
+class FamilyControllerApi(basePath: kotlin.String = "http://10.0.2.2:8050") : ApiClient(basePath) {
 
     /**
-    * Adds a family member.
+    * Adds a new entity.
     * 
-    * @param memberDto memberDto 
-    * @return FamilyMemberGet
+    * @param dto dto 
+    * @return FamilyPlain
     */
     @Suppress("UNCHECKED_CAST")
-    fun addMemberUsingPOST1(memberDto: CreateFamilyMember) : FamilyMemberGet {
-        val localVariableBody: kotlin.Any? = memberDto
+    fun addEntityUsingPOST(dto: CreateFamily) : FamilyPlain {
+        val localVariableBody: kotlin.Any? = dto
         val localVariableQuery: MultiValueMap = mapOf()
         
         val contentHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf()
@@ -40,17 +37,17 @@ class FamilyMemberControllersApi(basePath: kotlin.String = "http://10.0.2.2:8050
         
         val localVariableConfig = RequestConfig(
             RequestMethod.POST,
-            "/api/family-member",
+            "/api/family",
             query = localVariableQuery,
             headers = localVariableHeaders
         )
-        val response = request<FamilyMemberGet>(
+        val response = request<FamilyPlain>(
             localVariableConfig,
             localVariableBody
         )
 
         return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as FamilyMemberGet
+            ResponseType.Success -> (response as Success<*>).data as FamilyPlain
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
@@ -60,13 +57,13 @@ class FamilyMemberControllersApi(basePath: kotlin.String = "http://10.0.2.2:8050
     }
 
     /**
-    * Deletes the member by the ID.
+    * Deletes the entity by the ID.
     * 
     * @param id id 
-    * @return FamilyMemberPlain
+    * @return FamilyPlain
     */
     @Suppress("UNCHECKED_CAST")
-    fun deleteByIdUsingDELETE1(id: kotlin.Long) : FamilyMemberPlain {
+    fun deleteByIdUsingDELETE(id: kotlin.Long) : FamilyPlain {
         val localVariableBody: kotlin.Any? = null
         val localVariableQuery: MultiValueMap = mapOf()
         
@@ -78,17 +75,17 @@ class FamilyMemberControllersApi(basePath: kotlin.String = "http://10.0.2.2:8050
         
         val localVariableConfig = RequestConfig(
             RequestMethod.DELETE,
-            "/api/family-member/{id}".replace("{"+"id"+"}", "$id"),
+            "/api/family/{id}".replace("{"+"id"+"}", "$id"),
             query = localVariableQuery,
             headers = localVariableHeaders
         )
-        val response = request<FamilyMemberPlain>(
+        val response = request<FamilyPlain>(
             localVariableConfig,
             localVariableBody
         )
 
         return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as FamilyMemberPlain
+            ResponseType.Success -> (response as Success<*>).data as FamilyPlain
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
@@ -98,13 +95,52 @@ class FamilyMemberControllersApi(basePath: kotlin.String = "http://10.0.2.2:8050
     }
 
     /**
-    * Gets the data of the member by the ID.
+    * Gets all entities.
     * 
-    * @param id id 
-    * @return FamilyMemberGet
+    * @param page page (optional)
+    * @param size size (optional)
+    * @return kotlin.Array<FamilyPlain>
     */
     @Suppress("UNCHECKED_CAST")
-    fun getMemberByIdUsingGET(id: kotlin.Long) : FamilyMemberGet {
+    fun getEntitiesUsingGET(page: kotlin.Int, size: kotlin.Int) : kotlin.Array<FamilyPlain> {
+        val localVariableBody: kotlin.Any? = null
+        val localVariableQuery: MultiValueMap = mapOf("page" to listOf("$page"), "size" to listOf("$size"))
+        
+        val contentHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf()
+        val acceptsHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf("Accept" to "*/*")
+        val localVariableHeaders: kotlin.collections.MutableMap<kotlin.String,kotlin.String> = mutableMapOf()
+        localVariableHeaders.putAll(contentHeaders)
+        localVariableHeaders.putAll(acceptsHeaders)
+        
+        val localVariableConfig = RequestConfig(
+            RequestMethod.GET,
+            "/api/family",
+            query = localVariableQuery,
+            headers = localVariableHeaders
+        )
+        val response = request<kotlin.Array<FamilyPlain>>(
+            localVariableConfig,
+            localVariableBody
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as kotlin.Array<FamilyPlain>
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+            else -> throw kotlin.IllegalStateException("Undefined ResponseType.")
+        }
+    }
+
+    /**
+    * Gets the data of the entity by the ID.
+    * 
+    * @param id id 
+    * @return FamilyPlain
+    */
+    @Suppress("UNCHECKED_CAST")
+    fun getEntityByIdUsingGET(id: kotlin.Long) : FamilyPlain {
         val localVariableBody: kotlin.Any? = null
         val localVariableQuery: MultiValueMap = mapOf()
         
@@ -116,17 +152,17 @@ class FamilyMemberControllersApi(basePath: kotlin.String = "http://10.0.2.2:8050
         
         val localVariableConfig = RequestConfig(
             RequestMethod.GET,
-            "/api/family-member/{id}".replace("{"+"id"+"}", "$id"),
+            "/api/family/{id}".replace("{"+"id"+"}", "$id"),
             query = localVariableQuery,
             headers = localVariableHeaders
         )
-        val response = request<FamilyMemberGet>(
+        val response = request<FamilyPlain>(
             localVariableConfig,
             localVariableBody
         )
 
         return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as FamilyMemberGet
+            ResponseType.Success -> (response as Success<*>).data as FamilyPlain
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
@@ -136,127 +172,93 @@ class FamilyMemberControllersApi(basePath: kotlin.String = "http://10.0.2.2:8050
     }
 
     /**
-    *  Gets all family members.
-    * 
-    * @return kotlin.Array<FamilyMemberGet>
-    */
-    @Suppress("UNCHECKED_CAST")
-    fun getMembersUsingGET() : kotlin.Array<FamilyMemberGet> {
-        val localVariableBody: kotlin.Any? = null
-        val localVariableQuery: MultiValueMap = mapOf()
-        
-        val contentHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf()
-        val acceptsHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf("Accept" to "*/*")
-        val localVariableHeaders: kotlin.collections.MutableMap<kotlin.String,kotlin.String> = mutableMapOf()
-        localVariableHeaders.putAll(contentHeaders)
-        localVariableHeaders.putAll(acceptsHeaders)
-        
-        val localVariableConfig = RequestConfig(
-            RequestMethod.GET,
-            "/api/family-member",
-            query = localVariableQuery,
-            headers = localVariableHeaders
-        )
-        val response = request<kotlin.Array<FamilyMemberGet>>(
-            localVariableConfig,
-            localVariableBody
-        )
-
-        return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as kotlin.Array<FamilyMemberGet>
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-            else -> throw kotlin.IllegalStateException("Undefined ResponseType.")
-        }
-    }
-
-    /**
-    * Login method for users
-    * 
-    * @param loginData loginData 
-    * @return void
-    */
-    fun loginUsingPOST(loginData: LoginDTO) : Unit {
-        val localVariableBody: kotlin.Any? = loginData
-        val localVariableQuery: MultiValueMap = mapOf()
-        
-        val contentHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf()
-        val acceptsHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf("Accept" to "*/*")
-        val localVariableHeaders: kotlin.collections.MutableMap<kotlin.String,kotlin.String> = mutableMapOf()
-        localVariableHeaders.putAll(contentHeaders)
-        localVariableHeaders.putAll(acceptsHeaders)
-        
-        val localVariableConfig = RequestConfig(
-            RequestMethod.POST,
-            "/api/family-member/login",
-            query = localVariableQuery,
-            headers = localVariableHeaders
-        )
-        val response = request<Unit>(
-            localVariableConfig,
-            localVariableBody
-        )
-
-        return when (response.responseType) {
-            ResponseType.Success -> Unit
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-            else -> throw kotlin.IllegalStateException("Undefined ResponseType.")
-        }
-    }
-
-    /**
-    * Sign up method for users
-    * 
-    * @param loginData loginData 
-    * @return Tokens
-    */
-    @Suppress("UNCHECKED_CAST")
-    fun registerUsingPOST(loginData: LoginDTO) : Tokens {
-        val localVariableBody: kotlin.Any? = loginData
-        val localVariableQuery: MultiValueMap = mapOf()
-        
-        val contentHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf()
-        val acceptsHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf("Accept" to "*/*")
-        val localVariableHeaders: kotlin.collections.MutableMap<kotlin.String,kotlin.String> = mutableMapOf()
-        localVariableHeaders.putAll(contentHeaders)
-        localVariableHeaders.putAll(acceptsHeaders)
-        
-        val localVariableConfig = RequestConfig(
-            RequestMethod.POST,
-            "/api/family-member/register",
-            query = localVariableQuery,
-            headers = localVariableHeaders
-        )
-        val response = request<Tokens>(
-            localVariableConfig,
-            localVariableBody
-        )
-
-        return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as Tokens
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-            else -> throw kotlin.IllegalStateException("Undefined ResponseType.")
-        }
-    }
-
-    /**
-    * Updates the data of a family member.
+    * Endpoint for joining the family
     * 
     * @param id id 
-    * @param member member 
-    * @return FamilyMemberGet
+    * @param memberId memberId 
+    * @return FamilyPlain
     */
     @Suppress("UNCHECKED_CAST")
-    fun updateMemberByIdUsingPUT1(id: kotlin.Long, member: CreateFamilyMember) : FamilyMemberGet {
-        val localVariableBody: kotlin.Any? = member
+    fun joinFamilyUsingPOST(id: kotlin.Long, memberId: kotlin.Long) : FamilyPlain {
+        val localVariableBody: kotlin.Any? = null
+        val localVariableQuery: MultiValueMap = mapOf("memberId" to listOf("$memberId"))
+        
+        val contentHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf()
+        val acceptsHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf("Accept" to "*/*")
+        val localVariableHeaders: kotlin.collections.MutableMap<kotlin.String,kotlin.String> = mutableMapOf()
+        localVariableHeaders.putAll(contentHeaders)
+        localVariableHeaders.putAll(acceptsHeaders)
+        
+        val localVariableConfig = RequestConfig(
+            RequestMethod.POST,
+            "/api/family/{id}/join".replace("{"+"id"+"}", "$id"),
+            query = localVariableQuery,
+            headers = localVariableHeaders
+        )
+        val response = request<FamilyPlain>(
+            localVariableConfig,
+            localVariableBody
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as FamilyPlain
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+            else -> throw kotlin.IllegalStateException("Undefined ResponseType.")
+        }
+    }
+
+    /**
+    * Endpoint for leaving the family
+    * 
+    * @param id id 
+    * @param memberId memberId 
+    * @return FamilyPlain
+    */
+    @Suppress("UNCHECKED_CAST")
+    fun leaveFamilyUsingPOST(id: kotlin.Long, memberId: kotlin.Long) : FamilyPlain {
+        val localVariableBody: kotlin.Any? = null
+        val localVariableQuery: MultiValueMap = mapOf("memberId" to listOf("$memberId"))
+        
+        val contentHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf()
+        val acceptsHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf("Accept" to "*/*")
+        val localVariableHeaders: kotlin.collections.MutableMap<kotlin.String,kotlin.String> = mutableMapOf()
+        localVariableHeaders.putAll(contentHeaders)
+        localVariableHeaders.putAll(acceptsHeaders)
+        
+        val localVariableConfig = RequestConfig(
+            RequestMethod.POST,
+            "/api/family/{id}/leave".replace("{"+"id"+"}", "$id"),
+            query = localVariableQuery,
+            headers = localVariableHeaders
+        )
+        val response = request<FamilyPlain>(
+            localVariableConfig,
+            localVariableBody
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as FamilyPlain
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+            else -> throw kotlin.IllegalStateException("Undefined ResponseType.")
+        }
+    }
+
+    /**
+    * Updates the data of an entity specified by the id.
+    * 
+    * @param dto dto 
+    * @param id id 
+    * @return FamilyPlain
+    */
+    @Suppress("UNCHECKED_CAST")
+    fun updateEntityByIdUsingPUT(dto: CreateFamily, id: kotlin.Long) : FamilyPlain {
+        val localVariableBody: kotlin.Any? = dto
         val localVariableQuery: MultiValueMap = mapOf()
         
         val contentHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf()
@@ -267,17 +269,17 @@ class FamilyMemberControllersApi(basePath: kotlin.String = "http://10.0.2.2:8050
         
         val localVariableConfig = RequestConfig(
             RequestMethod.PUT,
-            "/api/family-member/{id}".replace("{"+"id"+"}", "$id"),
+            "/api/family/{id}".replace("{"+"id"+"}", "$id"),
             query = localVariableQuery,
             headers = localVariableHeaders
         )
-        val response = request<FamilyMemberGet>(
+        val response = request<FamilyPlain>(
             localVariableConfig,
             localVariableBody
         )
 
         return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as FamilyMemberGet
+            ResponseType.Success -> (response as Success<*>).data as FamilyPlain
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")

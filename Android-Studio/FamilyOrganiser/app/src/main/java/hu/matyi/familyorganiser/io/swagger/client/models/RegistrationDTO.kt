@@ -14,12 +14,14 @@ package io.swagger.client.models
 
 /**
  * 
- * @param familyId 
- * @param location 
+ * @param uid 
+ * @param username 
+ * @param password 
  */
-data class CreateShoppingList (
-    val familyId: kotlin.Long,
-    val location: kotlin.String
+data class RegistrationDTO (
+    val uid: kotlin.String,
+    val username: kotlin.String,
+    val password: kotlin.String
 ) {
 
 }

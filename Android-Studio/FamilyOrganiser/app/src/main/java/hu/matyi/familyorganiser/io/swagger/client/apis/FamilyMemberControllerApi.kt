@@ -11,61 +11,25 @@
 */
 package io.swagger.client.apis
 
-import io.swagger.client.models.CreateShoppingList
-import io.swagger.client.models.ShoppingListGet
+import io.swagger.client.models.CreateFamilyMember
+import io.swagger.client.models.FamilyMemberGet
+import io.swagger.client.models.LoginDTO
+import io.swagger.client.models.RegistrationDTO
+import io.swagger.client.models.Tokens
 
 import io.swagger.client.infrastructure.*
 
-class ShoppingListControllersApi(basePath: kotlin.String = "https://localhost:8050") : ApiClient(basePath) {
+class FamilyMemberControllerApi(basePath: kotlin.String = "http://10.0.2.2:8050") : ApiClient(basePath) {
 
     /**
-    * Adds the shopping list shoppingitem to the shopping list
+    * Adds a new entity.
     * 
-    * @param id id 
-    * @param itemId item_id 
-    * @return ShoppingListGet
+    * @param dto dto 
+    * @return FamilyMemberGet
     */
     @Suppress("UNCHECKED_CAST")
-    fun addItemUsingPATCH(id: kotlin.Long, itemId: kotlin.Long) : ShoppingListGet {
-        val localVariableBody: kotlin.Any? = null
-        val localVariableQuery: MultiValueMap = mapOf()
-        
-        val contentHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf()
-        val acceptsHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf("Accept" to "*/*")
-        val localVariableHeaders: kotlin.collections.MutableMap<kotlin.String,kotlin.String> = mutableMapOf()
-        localVariableHeaders.putAll(contentHeaders)
-        localVariableHeaders.putAll(acceptsHeaders)
-        
-        val localVariableConfig = RequestConfig(
-            RequestMethod.PATCH,
-            "/api/shopping-list/{id}/add-item/{item_id}".replace("{"+"id"+"}", "$id").replace("{"+"item_id"+"}", "$itemId"),
-            query = localVariableQuery,
-            headers = localVariableHeaders
-        )
-        val response = request<ShoppingListGet>(
-            localVariableConfig,
-            localVariableBody
-        )
-
-        return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as ShoppingListGet
-            ResponseType.Informational -> TODO()
-            ResponseType.Redirection -> TODO()
-            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
-            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
-            else -> throw kotlin.IllegalStateException("Undefined ResponseType.")
-        }
-    }
-
-    /**
-    * Creates a new shopping list.
-    * 
-    * @param list list 
-    * @return ShoppingListGet
-    */
-    @Suppress("UNCHECKED_CAST")
-    fun addMemberUsingPOST2(list: CreateShoppingList) : ShoppingListGet {
-        val localVariableBody: kotlin.Any? = list
+    fun addEntityUsingPOST1(dto: CreateFamilyMember) : FamilyMemberGet {
+        val localVariableBody: kotlin.Any? = dto
         val localVariableQuery: MultiValueMap = mapOf()
         
         val contentHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf()
@@ -76,17 +40,17 @@ class ShoppingListControllersApi(basePath: kotlin.String = "https://localhost:80
         
         val localVariableConfig = RequestConfig(
             RequestMethod.POST,
-            "/api/shopping-list",
+            "/api/family-member",
             query = localVariableQuery,
             headers = localVariableHeaders
         )
-        val response = request<ShoppingListGet>(
+        val response = request<FamilyMemberGet>(
             localVariableConfig,
             localVariableBody
         )
 
         return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as ShoppingListGet
+            ResponseType.Success -> (response as Success<*>).data as FamilyMemberGet
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
@@ -96,13 +60,13 @@ class ShoppingListControllersApi(basePath: kotlin.String = "https://localhost:80
     }
 
     /**
-    * Deletes the shopping list by the ID.
+    * Deletes the entity by the ID.
     * 
     * @param id id 
-    * @return ShoppingListGet
+    * @return FamilyMemberGet
     */
     @Suppress("UNCHECKED_CAST")
-    fun deleteByIdUsingDELETE2(id: kotlin.Long) : ShoppingListGet {
+    fun deleteByIdUsingDELETE1(id: kotlin.Long) : FamilyMemberGet {
         val localVariableBody: kotlin.Any? = null
         val localVariableQuery: MultiValueMap = mapOf()
         
@@ -114,17 +78,17 @@ class ShoppingListControllersApi(basePath: kotlin.String = "https://localhost:80
         
         val localVariableConfig = RequestConfig(
             RequestMethod.DELETE,
-            "/api/shopping-list/{id}".replace("{"+"id"+"}", "$id"),
+            "/api/family-member/{id}".replace("{"+"id"+"}", "$id"),
             query = localVariableQuery,
             headers = localVariableHeaders
         )
-        val response = request<ShoppingListGet>(
+        val response = request<FamilyMemberGet>(
             localVariableConfig,
             localVariableBody
         )
 
         return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as ShoppingListGet
+            ResponseType.Success -> (response as Success<*>).data as FamilyMemberGet
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
@@ -134,13 +98,52 @@ class ShoppingListControllersApi(basePath: kotlin.String = "https://localhost:80
     }
 
     /**
-    * Gets the data of the shopping list by the ID.
+    * Gets all entities.
     * 
-    * @param id id 
-    * @return ShoppingListGet
+    * @param page page (optional)
+    * @param size size (optional)
+    * @return kotlin.Array<FamilyMemberGet>
     */
     @Suppress("UNCHECKED_CAST")
-    fun getMemberByIdUsingGET1(id: kotlin.Long) : ShoppingListGet {
+    fun getEntitiesUsingGET1(page: kotlin.Int, size: kotlin.Int) : kotlin.Array<FamilyMemberGet> {
+        val localVariableBody: kotlin.Any? = null
+        val localVariableQuery: MultiValueMap = mapOf("page" to listOf("$page"), "size" to listOf("$size"))
+        
+        val contentHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf()
+        val acceptsHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf("Accept" to "*/*")
+        val localVariableHeaders: kotlin.collections.MutableMap<kotlin.String,kotlin.String> = mutableMapOf()
+        localVariableHeaders.putAll(contentHeaders)
+        localVariableHeaders.putAll(acceptsHeaders)
+        
+        val localVariableConfig = RequestConfig(
+            RequestMethod.GET,
+            "/api/family-member",
+            query = localVariableQuery,
+            headers = localVariableHeaders
+        )
+        val response = request<kotlin.Array<FamilyMemberGet>>(
+            localVariableConfig,
+            localVariableBody
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as kotlin.Array<FamilyMemberGet>
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+            else -> throw kotlin.IllegalStateException("Undefined ResponseType.")
+        }
+    }
+
+    /**
+    * Gets the data of the entity by the ID.
+    * 
+    * @param id id 
+    * @return FamilyMemberGet
+    */
+    @Suppress("UNCHECKED_CAST")
+    fun getEntityByIdUsingGET1(id: kotlin.Long) : FamilyMemberGet {
         val localVariableBody: kotlin.Any? = null
         val localVariableQuery: MultiValueMap = mapOf()
         
@@ -152,17 +155,17 @@ class ShoppingListControllersApi(basePath: kotlin.String = "https://localhost:80
         
         val localVariableConfig = RequestConfig(
             RequestMethod.GET,
-            "/api/shopping-list/{id}".replace("{"+"id"+"}", "$id"),
+            "/api/family-member/{id}".replace("{"+"id"+"}", "$id"),
             query = localVariableQuery,
             headers = localVariableHeaders
         )
-        val response = request<ShoppingListGet>(
+        val response = request<FamilyMemberGet>(
             localVariableConfig,
             localVariableBody
         )
 
         return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as ShoppingListGet
+            ResponseType.Success -> (response as Success<*>).data as FamilyMemberGet
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
@@ -172,13 +175,13 @@ class ShoppingListControllersApi(basePath: kotlin.String = "https://localhost:80
     }
 
     /**
-    * Gets all shopping lists.
+    * Login method for users
     * 
-    * @return kotlin.Array<ShoppingListGet>
+    * @param loginData loginData 
+    * @return void
     */
-    @Suppress("UNCHECKED_CAST")
-    fun getMembersUsingGET1() : kotlin.Array<ShoppingListGet> {
-        val localVariableBody: kotlin.Any? = null
+    fun loginUsingPOST(loginData: LoginDTO) : Unit {
+        val localVariableBody: kotlin.Any? = loginData
         val localVariableQuery: MultiValueMap = mapOf()
         
         val contentHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf()
@@ -188,18 +191,18 @@ class ShoppingListControllersApi(basePath: kotlin.String = "https://localhost:80
         localVariableHeaders.putAll(acceptsHeaders)
         
         val localVariableConfig = RequestConfig(
-            RequestMethod.GET,
-            "/api/shopping-list",
+            RequestMethod.POST,
+            "/api/family-member/login",
             query = localVariableQuery,
             headers = localVariableHeaders
         )
-        val response = request<kotlin.Array<ShoppingListGet>>(
+        val response = request<Unit>(
             localVariableConfig,
             localVariableBody
         )
 
         return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as kotlin.Array<ShoppingListGet>
+            ResponseType.Success -> Unit
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
@@ -209,15 +212,53 @@ class ShoppingListControllersApi(basePath: kotlin.String = "https://localhost:80
     }
 
     /**
-    * Removes the shopping list shoppingitem from the shopping list
+    * Sign up method for users
     * 
+    * @param registerData registerData 
+    * @return Tokens
+    */
+    @Suppress("UNCHECKED_CAST")
+    fun registerUsingPOST(registerData: RegistrationDTO) : Tokens {
+        val localVariableBody: kotlin.Any? = registerData
+        val localVariableQuery: MultiValueMap = mapOf()
+        
+        val contentHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf()
+        val acceptsHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf("Accept" to "*/*")
+        val localVariableHeaders: kotlin.collections.MutableMap<kotlin.String,kotlin.String> = mutableMapOf()
+        localVariableHeaders.putAll(contentHeaders)
+        localVariableHeaders.putAll(acceptsHeaders)
+        
+        val localVariableConfig = RequestConfig(
+            RequestMethod.POST,
+            "/api/family-member/sign-up",
+            query = localVariableQuery,
+            headers = localVariableHeaders
+        )
+        val response = request<Tokens>(
+            localVariableConfig,
+            localVariableBody
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as Tokens
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+            else -> throw kotlin.IllegalStateException("Undefined ResponseType.")
+        }
+    }
+
+    /**
+    * Updates the data of an entity specified by the id.
+    * 
+    * @param dto dto 
     * @param id id 
-    * @param itemId item_id 
-    * @return ShoppingListGet
+    * @return FamilyMemberGet
     */
     @Suppress("UNCHECKED_CAST")
-    fun removeItemUsingPATCH(id: kotlin.Long, itemId: kotlin.Long) : ShoppingListGet {
-        val localVariableBody: kotlin.Any? = null
+    fun updateEntityByIdUsingPUT1(dto: CreateFamilyMember, id: kotlin.Long) : FamilyMemberGet {
+        val localVariableBody: kotlin.Any? = dto
         val localVariableQuery: MultiValueMap = mapOf()
         
         val contentHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf()
@@ -227,18 +268,18 @@ class ShoppingListControllersApi(basePath: kotlin.String = "https://localhost:80
         localVariableHeaders.putAll(acceptsHeaders)
         
         val localVariableConfig = RequestConfig(
-            RequestMethod.PATCH,
-            "/api/shopping-list/{id}/remove-item/{item_id}".replace("{"+"id"+"}", "$id").replace("{"+"item_id"+"}", "$itemId"),
+            RequestMethod.PUT,
+            "/api/family-member/{id}".replace("{"+"id"+"}", "$id"),
             query = localVariableQuery,
             headers = localVariableHeaders
         )
-        val response = request<ShoppingListGet>(
+        val response = request<FamilyMemberGet>(
             localVariableConfig,
             localVariableBody
         )
 
         return when (response.responseType) {
-            ResponseType.Success -> (response as Success<*>).data as ShoppingListGet
+            ResponseType.Success -> (response as Success<*>).data as FamilyMemberGet
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
