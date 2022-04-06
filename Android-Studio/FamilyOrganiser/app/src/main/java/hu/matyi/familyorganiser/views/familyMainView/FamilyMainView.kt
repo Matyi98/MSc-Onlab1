@@ -32,9 +32,12 @@ import java.lang.Exception
 import android.content.Context.MODE_PRIVATE
 
 import android.content.SharedPreferences
-
-
-
+import androidx.compose.foundation.border
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.layout.ContentScale
 
 
 class FamilyMainView: ComponentActivity()  {
@@ -53,12 +56,10 @@ class FamilyMainView: ComponentActivity()  {
 private fun Screen() {
     val context = LocalContext.current
     val prefs: SharedPreferences = context.getSharedPreferences("ProfilPreference", MODE_PRIVATE)
-    val surname = prefs.getString("surname", "Blank Name") //"Blank Name" the default value.
+    val surname = prefs.getString("surname", "Blank Name")
     val lastname = prefs.getString("lastname", "Blank Name")
     val email = prefs.getString("email", "Blank Mail")
     val birthday = prefs.getString("birthday", "Blank Date")
-
-    val idName = prefs.getInt("id", 0) // 0 is the default value.
 
     Scaffold(backgroundColor = Color.White)
     {
@@ -77,36 +78,22 @@ private fun Screen() {
                     Card(
                         Modifier
                             .weight(1f)
-                            .padding(8.dp),
-                    shape = RoundedCornerShape(32.dp)
+                            .padding(10.dp),
+                    //shape = RoundedCornerShape(32.dp)
                     )
                     {
-                        Row()
-                        {
-                            RectangleShape
+                            Column(Modifier.fillMaxSize()) {
                             surname?.let { it1 -> TextField(value = it1, onValueChange = {}) }
                             lastname?.let { it1 -> TextField(value = it1, onValueChange = {}) }
                             birthday?.let { it1 -> TextField(value = it1, onValueChange = {}) }
                             email?.let { it1 -> TextField(value = it1, onValueChange = {}) }
-                        }
-                    }
-                    Card(
-                        Modifier
-                            .weight(1f)
-                            .padding(8.dp),
-                        shape = RoundedCornerShape(32.dp)
-                    )
-                    {
-                        Row()
-                        {
-                            TextField(value = "Kis Pistané", onValueChange = {})
-                        }
+                            }
                     }
                 }
             }
             Card(
                 Modifier
-                    .weight(2.3f)
+                    .weight(2f)
                     .padding(8.dp),
 
                 shape = RoundedCornerShape(32.dp)
@@ -118,20 +105,29 @@ private fun Screen() {
                         .fillMaxSize()
                         .padding(32.dp)
                 ) {
-                    welcomText(text = stringResource(R.string.Hello) + lastname)
-                    noEffectButton(text = "Shopping")
-                    noEffectButton(text = "Events")
                     var file = File(context.filesDir,"familyPhoto")
                     var stringToBitmap : String =
                         file.inputStream().readBytes().toString(Charsets.UTF_8)
                     val bitmap = StringToBitMap(stringToBitmap)
                     if (bitmap != null) {
+                        Card(
+                            modifier = Modifier.size(150.dp),
+                            shape = CircleShape,
+                            elevation = 2.dp
+                        ) {
                             Image(
                                 bitmap = bitmap.asImageBitmap(),
                                 contentDescription = null,
-                                modifier = Modifier.fillMaxSize()
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.clip(CircleShape)
+                                    .size(70.dp)
+                                    .clip(CircleShape)                       // clip to the circle shape
+                                    .border(2.dp, Color.Gray, CircleShape)
                             )
-
+                        }
+                    welcomText(text = stringResource(R.string.Hello) +" "+ surname)
+                    noEffectButton(text = "Shopping")
+                    noEffectButton(text = "Events")
                     }
 
                 }
