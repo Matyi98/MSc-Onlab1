@@ -27,13 +27,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import hu.matyi.familyorganiser.R
-import hu.matyi.familyorganiser.components.basicButton
-import hu.matyi.familyorganiser.components.basicInputField
-import hu.matyi.familyorganiser.components.noEffectButton
-import hu.matyi.familyorganiser.components.welcomText
+import hu.matyi.familyorganiser.components.*
 import hu.matyi.familyorganiser.ui.theme.FamilyOrganiserTheme
 import hu.matyi.familyorganiser.views.createFamilyForm.CreateFamilyActivity
 import hu.matyi.familyorganiser.views.loginForm.LoginActivity
+import hu.matyi.familyorganiser.views.profilSettings.ProfilSettings
 import hu.matyi.familyorganiser.views.registerForm.RegisterActivity
 
 class FamilyMenuActivity : ComponentActivity() {
@@ -78,7 +76,9 @@ private fun Screen() {
                     val familyCode = basicInputField(text = stringResource(R.string.familyCode))
                     noEffectButton("Join")
                     val intent = Intent(context, CreateFamilyActivity::class.java)
-                    basicButton(context = context, text = stringResource(R.string.familyCreate_button_text), intent)
+                    secondOptionButton(context = context, text = stringResource(R.string.familyCreate_button_text), intent)
+                    val intent1 = Intent(context, ProfilSettings::class.java)
+                    settingsButton(context = context,  intent = intent1)
                 }
             }
         }

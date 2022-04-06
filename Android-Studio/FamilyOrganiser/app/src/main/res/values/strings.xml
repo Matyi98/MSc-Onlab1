@@ -15,4 +15,7 @@
     <string name="pick_image">Pick image</string>
     <string name="Members">Members</string>
     <string name="Hello">Hello</string>
+    <string name="profilsettings_welcome_text">Set up your profil</string>
+    <string name="save_and_exit"><![CDATA[Save&exit]]></string>
+    <string name="cancel">Cancel</string>
 </resources>

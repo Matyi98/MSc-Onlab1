@@ -29,6 +29,12 @@ import hu.matyi.familyorganiser.components.basicButton
 import hu.matyi.familyorganiser.components.noEffectButton
 import java.io.*
 import java.lang.Exception
+import android.content.Context.MODE_PRIVATE
+
+import android.content.SharedPreferences
+
+
+
 
 
 class FamilyMainView: ComponentActivity()  {
@@ -36,7 +42,6 @@ class FamilyMainView: ComponentActivity()  {
         super.onCreate(savedInstanceState)
         setContent {
             FamilyOrganiserTheme {
-
                 Screen()
             }
         }
@@ -47,6 +52,14 @@ class FamilyMainView: ComponentActivity()  {
 @Composable
 private fun Screen() {
     val context = LocalContext.current
+    val prefs: SharedPreferences = context.getSharedPreferences("ProfilPreference", MODE_PRIVATE)
+    val surname = prefs.getString("surname", "Blank Name") //"Blank Name" the default value.
+    val lastname = prefs.getString("lastname", "Blank Name")
+    val email = prefs.getString("email", "Blank Mail")
+    val birthday = prefs.getString("birthday", "Blank Date")
+
+    val idName = prefs.getInt("id", 0) // 0 is the default value.
+
     Scaffold(backgroundColor = Color.White)
     {
         Row(Modifier.fillMaxSize())
@@ -71,7 +84,10 @@ private fun Screen() {
                         Row()
                         {
                             RectangleShape
-                            TextField(value = "Kis Pista", onValueChange = {})
+                            surname?.let { it1 -> TextField(value = it1, onValueChange = {}) }
+                            lastname?.let { it1 -> TextField(value = it1, onValueChange = {}) }
+                            birthday?.let { it1 -> TextField(value = it1, onValueChange = {}) }
+                            email?.let { it1 -> TextField(value = it1, onValueChange = {}) }
                         }
                     }
                     Card(
@@ -102,7 +118,7 @@ private fun Screen() {
                         .fillMaxSize()
                         .padding(32.dp)
                 ) {
-                    welcomText(text = stringResource(R.string.Hello))
+                    welcomText(text = stringResource(R.string.Hello) + lastname)
                     noEffectButton(text = "Shopping")
                     noEffectButton(text = "Events")
                     var file = File(context.filesDir,"familyPhoto")

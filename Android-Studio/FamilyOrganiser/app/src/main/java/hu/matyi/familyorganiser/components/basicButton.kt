@@ -19,14 +19,15 @@ import hu.matyi.familyorganiser.R
 
 
 @Composable
-fun basicButton(context: Context, text: String, intent: Intent, check: () -> Boolean = {true}) {
+fun basicButton(context: Context, text: String, intent: Intent? = null, check: () -> Boolean = {true}, extraFunction: () -> Unit = {}) {
+    extraFunction()
     Button(
         onClick = {
-            if(check()) {
+            if(check() && intent != null) {
                 context.startActivity(intent)
                 (context as Activity).overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up)
             }
-            else
+            else if (intent != null)
             {
                 Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG).show()
             }
