@@ -1,5 +1,6 @@
 package hu.matyi.familyorganiser.components
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +19,7 @@ fun secondOptionButton(context: Context, text: String, intent: Intent) {
     Button(
         onClick = {
             context.startActivity(intent)
+            (context as Activity).overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up)
         },
         modifier = Modifier
             .fillMaxWidth()

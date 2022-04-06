@@ -65,7 +65,9 @@ class LoginActivity : ComponentActivity() {
                        val username = basicInputField(stringResource(R.string.username))
                        val password = passwordField()
                        val intent1 = Intent(context, FamilyMenuActivity::class.java)
-                       basicButton(context, stringResource(R.string.login_button_text), intent1) { LoginHandler(username,password).sendLoginRequest() }
+                       basicButton(context, stringResource(R.string.login_button_text), intent1) {
+                           LoginHandler(username,password).sendLoginRequest()
+                       }
                        val intent2 = Intent(context, RegisterActivity::class.java )
                        secondOptionButton(context, stringResource(R.string.registrate_button_text),intent2)
                    }

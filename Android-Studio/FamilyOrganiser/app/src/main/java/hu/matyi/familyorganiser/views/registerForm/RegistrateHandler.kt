@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class RegistrationHandler(private val username: String, private val password: String) {
+class RegistrationHandler(private val username: String, private val password: String, private val password2: String) {
     fun sendRegistrationRequest() : Boolean
     {
         GlobalScope.launch(Dispatchers.IO) {
@@ -19,7 +19,7 @@ class RegistrationHandler(private val username: String, private val password: St
 
             }
         }
-        return true
+        return (password == password2 && password.isNotEmpty() && username.isNotEmpty())
     }
 }
 

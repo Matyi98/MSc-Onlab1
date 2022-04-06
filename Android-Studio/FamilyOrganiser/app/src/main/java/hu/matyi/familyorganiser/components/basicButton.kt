@@ -1,8 +1,9 @@
 package hu.matyi.familyorganiser.components
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.activity.ComponentActivity
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
+import hu.matyi.familyorganiser.R
+
 
 @Composable
 fun basicButton(context: Context, text: String, intent: Intent, check: () -> Boolean = {true}) {
@@ -21,6 +24,11 @@ fun basicButton(context: Context, text: String, intent: Intent, check: () -> Boo
         onClick = {
             if(check()) {
                 context.startActivity(intent)
+                (context as Activity).overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up)
+            }
+            else
+            {
+                Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG).show()
             }
         },
         modifier = Modifier

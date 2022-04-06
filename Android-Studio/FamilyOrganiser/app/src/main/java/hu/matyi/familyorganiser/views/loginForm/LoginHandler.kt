@@ -22,7 +22,6 @@ class LoginHandler(private var name: String, private var password: String) {
 
             }
         }
-        return true
+        return name.isNotEmpty() && password.isNotEmpty()
     }
-
 }
