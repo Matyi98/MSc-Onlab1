@@ -1,5 +1,6 @@
 package hu.matyi.familyorganiser.views.familyMainView
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -32,15 +33,32 @@ import java.lang.Exception
 import android.content.Context.MODE_PRIVATE
 
 import android.content.SharedPreferences
+import android.view.Gravity
 import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.Upload
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.VerticalAlignmentLine
+import androidx.compose.ui.text.style.TextAlign
+import com.google.accompanist.pager.*
+import com.google.accompanist.pager.calculateCurrentOffsetForPage
+import com.google.android.material.animation.AnimationUtils.lerp
+import kotlin.math.absoluteValue
 
-
+//https://google.github.io/accompanist/pager/
 class FamilyMainView: ComponentActivity()  {
+
+    @ExperimentalPagerApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -52,6 +70,10 @@ class FamilyMainView: ComponentActivity()  {
 
 }
 
+typealias ComposableFun = @Composable () -> Unit
+
+@SuppressLint("RestrictedApi")
+@ExperimentalPagerApi
 @Composable
 private fun Screen() {
     val context = LocalContext.current
@@ -60,82 +82,151 @@ private fun Screen() {
     val lastname = prefs.getString("lastname", "Blank Name")
     val email = prefs.getString("email", "Blank Mail")
     val birthday = prefs.getString("birthday", "Blank Date")
+    val selectedItem = remember { mutableStateOf("upload")}
 
-    Scaffold(backgroundColor = Color.White)
-    {
-        Row(Modifier.fillMaxSize())
-        {
-            Card(
-                Modifier
-                    .weight(1f)
-                    .padding(8.dp),
-                shape = RoundedCornerShape(32.dp)
-            )
-            {
-                Column(Modifier.fillMaxSize())
-                {
-                    memberListTitle()
-                    Card(
-                        Modifier
-                            .weight(1f)
-                            .padding(10.dp),
-                    //shape = RoundedCornerShape(32.dp)
-                    )
-                    {
-                            Column(Modifier.fillMaxSize()) {
-                            surname?.let { it1 -> TextField(value = it1, onValueChange = {}) }
-                            lastname?.let { it1 -> TextField(value = it1, onValueChange = {}) }
-                            birthday?.let { it1 -> TextField(value = it1, onValueChange = {}) }
-                            email?.let { it1 -> TextField(value = it1, onValueChange = {}) }
-                            }
-                    }
-                }
+    Scaffold(bottomBar = { BottomAppBar(backgroundColor = MaterialTheme.colors.primary,
+        content = {
+
+            BottomNavigation() {
+                BottomNavigationItem(
+                    icon = {
+                        Icon(Icons.Filled.Favorite , "")
+                    },
+                    label = { Text(text = "Favorite")},
+                    selected = selectedItem.value == "favorite",
+                    onClick = {
+                        //result.value = "Favorite icon clicked"
+                        selectedItem.value = "favorite"
+                    },
+                    alwaysShowLabel = false
+                )
+
+                BottomNavigationItem(
+                    icon = {
+                        Icon(Icons.Filled.Save , "")
+                    },
+                    label = { Text(text = "Save")},
+                    selected = selectedItem.value == "save",
+                    onClick = {
+                        //result.value = "Save icon clicked"
+                        selectedItem.value = "save"
+                    },
+                    alwaysShowLabel = false
+                )
+
+                BottomNavigationItem(
+                    icon = {
+                        Icon(Icons.Filled.Upload ,  "")
+                    },
+
+
+                    label = { Text(text = "Upload")},
+                    selected = selectedItem.value == "upload",
+                    onClick = {
+                        //result.value = "Upload icon clicked"
+                        selectedItem.value = "upload"
+                    },
+                    alwaysShowLabel = false
+                )
+
             }
-            Card(
-                Modifier
-                    .weight(2f)
-                    .padding(8.dp),
 
-                shape = RoundedCornerShape(32.dp)
-            )
+
+        }
+    ) }
+    ) {
+        HorizontalPager(2
+        ) { page ->
+            when(page)
             {
-                Column(
-                    Modifier
-                        .background(Color(R.color.teal_700))
-                        .fillMaxSize()
-                        .padding(32.dp)
-                ) {
-                    var file = File(context.filesDir,"familyPhoto")
-                    var stringToBitmap : String =
-                        file.inputStream().readBytes().toString(Charsets.UTF_8)
-                    val bitmap = StringToBitMap(stringToBitmap)
-                    if (bitmap != null) {
-                        Card(
-                            modifier = Modifier.size(150.dp),
-                            shape = CircleShape,
-                            elevation = 2.dp
-                        ) {
-                            Image(
-                                bitmap = bitmap.asImageBitmap(),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.clip(CircleShape)
-                                    .size(70.dp)
-                                    .clip(CircleShape)                       // clip to the circle shape
-                                    .border(2.dp, Color.Gray, CircleShape)
-                            )
-                        }
-                    welcomText(text = stringResource(R.string.Hello) +" "+ surname)
-                    noEffectButton(text = "Shopping")
-                    noEffectButton(text = "Events")
-                    }
-
-                }
-
+                0 -> helloCard(context = context, surname = surname)
+                1 -> memberListCard(surname = surname, lastname = lastname, birthday = birthday, email = email)
             }
         }
     }
 }
+
+@Composable
+private fun memberListCard(
+    surname: String?,
+    lastname: String?,
+    birthday: String?,
+    email: String?
+) {
+    Card(
+        Modifier.Companion
+            .padding(8.dp),
+        shape = RoundedCornerShape(32.dp)
+    )
+    {
+        Column(Modifier.fillMaxSize())
+        {
+            memberListTitle()
+            Card(
+                Modifier
+                    .weight(1f)
+                    .padding(10.dp),
+                //shape = RoundedCornerShape(32.dp)
+            )
+            {
+                Column(Modifier.fillMaxSize()) {
+                    surname?.let { it1 -> TextField(value = it1, onValueChange = {}) }
+                    lastname?.let { it1 -> TextField(value = it1, onValueChange = {}) }
+                    birthday?.let { it1 -> TextField(value = it1, onValueChange = {}) }
+                    email?.let { it1 -> TextField(value = it1, onValueChange = {}) }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun helloCard(context: Context, surname: String?) {
+        Card(
+            Modifier.Companion
+                .padding(8.dp),
+            shape = RoundedCornerShape(32.dp)
+        )
+        {
+            Column(
+                Modifier
+                    .background(Color(R.color.teal_700))
+                    .fillMaxSize()
+                    .padding(32.dp)
+            ) {
+                var file = File(context.filesDir, "familyPhoto")
+                var stringToBitmap: String =
+                    file.inputStream().readBytes().toString(Charsets.UTF_8)
+                val bitmap = StringToBitMap(stringToBitmap)
+                if (bitmap != null) {
+                    Card(
+                        modifier = Modifier.size(150.dp),
+                        shape = CircleShape,
+                        elevation = 2.dp
+                    ) {
+                        Image(
+                            bitmap = bitmap.asImageBitmap(),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .size(70.dp)
+                                .clip(CircleShape)                       // clip to the circle shape
+                                .border(2.dp, Color.Gray, CircleShape)
+                        )
+                    }
+                    welcomText(text = stringResource(R.string.Hello) + " " + surname)
+                    noEffectButton(text = "Shopping")
+                    noEffectButton(text = "Events")
+                }
+
+            }
+
+
+        }
+    }
+
+
 
 @Composable
 fun memberListTitle() {
@@ -172,26 +263,3 @@ fun StringToBitMap(encodedString: String?): Bitmap? {
         null
     }
 }
-
-/*private fun readFromFile(fileName: String, context: Context): InputStream? {
-    var ret = ""
-    //try {
-        val inputStream: InputStream? = context.openFileInput(fileName)
-        if (inputStream != null) {
-            val inputStreamReader = InputStreamReader(inputStream)
-            val bufferedReader = BufferedReader(inputStreamReader)
-            var receiveString: String? = ""
-            val stringBuilder = StringBuilder()
-            while (bufferedReader.readLine().also { receiveString = it } != null) {
-                stringBuilder.append("\n").append(receiveString)
-           // }
-            /*inputStream.close()
-            ret = stringBuilder.toString()
-        }
-    } catch (e: FileNotFoundException) {
-        Log.e("login activity", "File not found: $e")
-    } catch (e: IOException) {
-        Log.e("login activity", "Can not read file: $e")*/
-    }
-    return inputStream
-}*/
