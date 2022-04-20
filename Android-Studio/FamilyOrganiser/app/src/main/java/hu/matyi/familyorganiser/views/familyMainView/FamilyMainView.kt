@@ -9,10 +9,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,34 +24,26 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.util.Base64
 import androidx.compose.ui.graphics.asImageBitmap
-import hu.matyi.familyorganiser.components.basicButton
-import hu.matyi.familyorganiser.components.noEffectButton
 import java.io.*
 import java.lang.Exception
 import android.content.Context.MODE_PRIVATE
+import android.content.Intent
 
 import android.content.SharedPreferences
-import android.view.Gravity
 import androidx.compose.foundation.border
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Save
-import androidx.compose.material.icons.filled.Upload
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.text.style.TextAlign
 import com.google.accompanist.pager.*
-import com.google.accompanist.pager.calculateCurrentOffsetForPage
-import com.google.android.material.animation.AnimationUtils.lerp
-import kotlin.math.absoluteValue
+import hu.matyi.familyorganiser.components.settingsButton
+import hu.matyi.familyorganiser.views.profilSettings.ProfilSettings
 
 //https://google.github.io/accompanist/pager/
 class FamilyMainView: ComponentActivity()  {
@@ -82,69 +72,43 @@ private fun Screen() {
     val lastname = prefs.getString("lastname", "Blank Name")
     val email = prefs.getString("email", "Blank Mail")
     val birthday = prefs.getString("birthday", "Blank Date")
-    val selectedItem = remember { mutableStateOf("upload")}
+    val pagerState = rememberPagerState()
 
-    Scaffold(bottomBar = { BottomAppBar(backgroundColor = MaterialTheme.colors.primary,
-        content = {
-
-            BottomNavigation() {
-                BottomNavigationItem(
-                    icon = {
-                        Icon(Icons.Filled.Favorite , "")
-                    },
-                    label = { Text(text = "Favorite")},
-                    selected = selectedItem.value == "favorite",
-                    onClick = {
-                        //result.value = "Favorite icon clicked"
-                        selectedItem.value = "favorite"
-                    },
-                    alwaysShowLabel = false
+    val pages = listOf(0,1,2)
+    Column() {
+        TabRow(
+            selectedTabIndex = pagerState.currentPage,
+            indicator = { tabPositions ->
+                TabRowDefaults.Indicator(
+                    Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
                 )
-
-                BottomNavigationItem(
-                    icon = {
-                        Icon(Icons.Filled.Save , "")
-                    },
-                    label = { Text(text = "Save")},
-                    selected = selectedItem.value == "save",
-                    onClick = {
-                        //result.value = "Save icon clicked"
-                        selectedItem.value = "save"
-                    },
-                    alwaysShowLabel = false
-                )
-
-                BottomNavigationItem(
-                    icon = {
-                        Icon(Icons.Filled.Upload ,  "")
-                    },
-
-
-                    label = { Text(text = "Upload")},
-                    selected = selectedItem.value == "upload",
-                    onClick = {
-                        //result.value = "Upload icon clicked"
-                        selectedItem.value = "upload"
-                    },
-                    alwaysShowLabel = false
-                )
-
             }
-
-
+        ) {
+            pages.forEachIndexed { index, title ->
+                Tab(
+                    text = { Text(text = getTitleFromIndex(index)) },
+                    selected = pagerState.currentPage == index,
+                    onClick = { /* TODO */ },
+                )
+            }
         }
-    ) }
-    ) {
-        HorizontalPager(2
+        HorizontalPager(
+            3,
+            state = pagerState
         ) { page ->
-            when(page)
-            {
+            when (page) {
                 0 -> helloCard(context = context, surname = surname)
-                1 -> memberListCard(surname = surname, lastname = lastname, birthday = birthday, email = email)
+                1 -> memberListCard(
+                    surname = surname,
+                    lastname = lastname,
+                    birthday = birthday,
+                    email = email
+                )
+                2 -> ShoppingTab()
             }
         }
     }
-}
+    }
 
 @Composable
 private fun memberListCard(
@@ -169,7 +133,7 @@ private fun memberListCard(
                 //shape = RoundedCornerShape(32.dp)
             )
             {
-                Column(Modifier.fillMaxSize()) {
+                Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
                     surname?.let { it1 -> TextField(value = it1, onValueChange = {}) }
                     lastname?.let { it1 -> TextField(value = it1, onValueChange = {}) }
                     birthday?.let { it1 -> TextField(value = it1, onValueChange = {}) }
@@ -192,12 +156,15 @@ private fun helloCard(context: Context, surname: String?) {
                 Modifier
                     .background(Color(R.color.teal_700))
                     .fillMaxSize()
-                    .padding(32.dp)
+                    .padding(32.dp),
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 var file = File(context.filesDir, "familyPhoto")
                 var stringToBitmap: String =
                     file.inputStream().readBytes().toString(Charsets.UTF_8)
                 val bitmap = StringToBitMap(stringToBitmap)
+                welcomText(text = stringResource(R.string.Hello) + " " + surname)
                 if (bitmap != null) {
                     Card(
                         modifier = Modifier.size(150.dp),
@@ -210,14 +177,13 @@ private fun helloCard(context: Context, surname: String?) {
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
                                 .clip(CircleShape)
-                                .size(70.dp)
+                                .size(100.dp)
                                 .clip(CircleShape)                       // clip to the circle shape
                                 .border(2.dp, Color.Gray, CircleShape)
                         )
                     }
-                    welcomText(text = stringResource(R.string.Hello) + " " + surname)
-                    noEffectButton(text = "Shopping")
-                    noEffectButton(text = "Events")
+                    val intent = Intent(context, ProfilSettings::class.java)
+                    settingsButton(context = context, intent = intent)
                 }
 
             }
@@ -233,10 +199,11 @@ fun memberListTitle() {
     Text(
         text = stringResource(R.string.Members),
         fontWeight = FontWeight.Bold,
-        fontSize = 15.sp,
+        textAlign = TextAlign.Center,
+        fontSize = 12.sp,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp)
+            .padding(10.dp)
             .fillMaxWidth(),
         color = Color.White
     )
@@ -261,5 +228,99 @@ fun StringToBitMap(encodedString: String?): Bitmap? {
     } catch (e: Exception) {
         e.message
         null
+    }
+}
+
+fun getTitleFromIndex(Index : Int) : String
+{
+    var title : String = "empty"
+    when(Index)
+    {
+        0 -> title = "Menu"
+        1-> title = "Members"
+        2-> title = "Shopping"
+    }
+    return title
+}
+
+@Composable
+fun ShoppingTab()
+{
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colors.background
+    ) {
+        ShoppingScreen()
+    }
+}
+
+//https://developer.android.com/codelabs/jetpack-compose-state?hl=ja#5
+@Composable
+fun ShoppingListItem(
+    taskName: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    onClose: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier, verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 16.dp),
+            text = taskName
+        )
+        Checkbox(
+            checked = checked,
+            onCheckedChange = onCheckedChange
+        )
+        IconButton(onClick = onClose) {
+            Icon(Icons.Filled.Close, contentDescription = "Close")
+        }
+    }
+}
+
+data class ShoppingItem(val id: Int, val label: String)
+private fun getShoppingItem() = List(10) { i -> ShoppingItem(i, "Food # $i") }
+
+@Composable
+fun ShoppingList(
+    modifier: Modifier = Modifier,
+    list: List<ShoppingItem> = remember { getShoppingItem() }
+) {
+    LazyColumn(
+        modifier = modifier
+    ) {
+        items(list) { task ->
+            ShoppingListItem(taskName = "demoTask0",false,{},{})
+        }
+    }
+}
+
+@Composable
+fun StatelessCounter(count: Int, onIncrement: () -> Unit, modifier: Modifier = Modifier) {
+    Column(modifier = modifier.padding(16.dp)) {
+        if (count > 0) {
+            //Text("You've had $count glasses.")
+        }
+        Button(onClick = onIncrement, Modifier.padding(top = 8.dp), enabled = count < 10) {
+            Text("Add one")
+        }
+    }
+}
+
+@Composable
+fun StatefulCounter() {
+    var count by remember { mutableStateOf(0) }
+    StatelessCounter(count, { count++ })
+}
+
+@Composable
+fun ShoppingScreen(modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
+        StatefulCounter()
+        ShoppingList()
     }
 }
