@@ -20,6 +20,7 @@ fun secondOptionButton(context: Context, text: String, intent: Intent) {
         onClick = {
             context.startActivity(intent)
             (context as Activity).overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up)
+
         },
         modifier = Modifier
             .fillMaxWidth()
