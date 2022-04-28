@@ -12,7 +12,7 @@ class PostFamilyMember {
     @Test
     fun postFamilyMemberNoErrorTest() {
         val createFamilyMember = CreateFamilyMember("almaSurname","almaLastName","alma@alma.alma",null,
-            LocalDate.MAX,2)
+            LocalDate.now(),3)
         FamilyMemberControllerApi().addEntityUsingPOST1(createFamilyMember)
     }
 }

@@ -10,6 +10,6 @@ class DeleteFamily {
     @Test
     fun deleteFamilyNoErrorTest() {
         //FamilyControllerApi().deleteByIdUsingDELETE(2)
-          FamilyControllerApi().deleteByIdUsingDELETE(2)
+          FamilyControllerApi().deleteByIdUsingDELETE(20)
     }
 }

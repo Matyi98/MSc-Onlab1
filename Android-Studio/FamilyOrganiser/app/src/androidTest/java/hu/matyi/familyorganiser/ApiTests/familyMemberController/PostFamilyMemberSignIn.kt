@@ -11,7 +11,8 @@ class PostFamilyMemberSignIn {
 
     @Test
     fun postSignInNoErrorTest() {
-        FamilyMemberControllerApi().registerUsingPOST(RegistrationDTO("aaaaaaaa","alma","alma"))
+        val user=FamilyMemberControllerApi().getEntityByIdUsingGET1(14)
+        FamilyMemberControllerApi().registerUsingPOST(RegistrationDTO(user.uid,"alma","alma"))
     }
 
 

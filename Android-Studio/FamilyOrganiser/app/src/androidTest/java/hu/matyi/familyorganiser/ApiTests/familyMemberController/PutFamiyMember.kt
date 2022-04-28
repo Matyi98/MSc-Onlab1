@@ -10,7 +10,7 @@ class PutFamiyMember {
     @Test
     fun putFamilyMemberNoErrorTest() {
         val createFamilyMember = CreateFamilyMember("almaSurname","almaLastName","alma@alma.alma",null,
-            LocalDate.MAX,4)
+            LocalDate.now().plusYears(3),4)
         FamilyMemberControllerApi().updateEntityByIdUsingPUT1(createFamilyMember,5)
     }
 }
