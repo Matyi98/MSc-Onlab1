@@ -18,6 +18,7 @@ package io.swagger.client.models
  * @param id 
  * @param price 
  * @param product 
+ * @param purchased 
  * @param shoppingListId 
  */
 data class GetShoppingListItem (
@@ -25,6 +26,7 @@ data class GetShoppingListItem (
     val id: kotlin.Long,
     val price: kotlin.Int,
     val product: kotlin.String,
+    val purchased: kotlin.Boolean,
     val shoppingListId: kotlin.Long
 ) {
 

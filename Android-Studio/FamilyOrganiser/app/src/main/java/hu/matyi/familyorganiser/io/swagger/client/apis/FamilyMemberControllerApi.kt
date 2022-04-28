@@ -19,7 +19,7 @@ import io.swagger.client.models.Tokens
 
 import io.swagger.client.infrastructure.*
 
-class FamilyMemberControllerApi(basePath: kotlin.String = "http://10.0.2.2:8050") : ApiClient(basePath) {
+class FamilyMemberControllerApi(basePath: kotlin.String = "https://localhost:8050") : ApiClient(basePath) {
 
     /**
     * Adds a new entity.
@@ -175,12 +175,52 @@ class FamilyMemberControllerApi(basePath: kotlin.String = "http://10.0.2.2:8050"
     }
 
     /**
+    * Gets the family member of the current user
+    * 
+    * @param authorization Authorization 
+    * @param cookie cookie (optional)
+    * @return FamilyMemberGet
+    */
+    @Suppress("UNCHECKED_CAST")
+    fun getMeUsingGET(authorization: kotlin.String, cookie: kotlin.String) : FamilyMemberGet {
+        val localVariableBody: kotlin.Any? = cookie
+        val localVariableQuery: MultiValueMap = mapOf()
+        
+        val contentHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf()
+        val acceptsHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf("Accept" to "*/*")
+        val localVariableHeaders: kotlin.collections.MutableMap<kotlin.String,kotlin.String> = mutableMapOf("Authorization" to authorization)
+        localVariableHeaders.putAll(contentHeaders)
+        localVariableHeaders.putAll(acceptsHeaders)
+        
+        val localVariableConfig = RequestConfig(
+            RequestMethod.GET,
+            "/api/family-member/me",
+            query = localVariableQuery,
+            headers = localVariableHeaders
+        )
+        val response = request<FamilyMemberGet>(
+            localVariableConfig,
+            localVariableBody
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as FamilyMemberGet
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+            else -> throw kotlin.IllegalStateException("Undefined ResponseType.")
+        }
+    }
+
+    /**
     * Login method for users
     * 
     * @param loginData loginData 
-    * @return void
+    * @return Tokens
     */
-    fun loginUsingPOST(loginData: LoginDTO) : Unit {
+    @Suppress("UNCHECKED_CAST")
+    fun loginUsingPOST(loginData: LoginDTO) : Tokens {
         val localVariableBody: kotlin.Any? = loginData
         val localVariableQuery: MultiValueMap = mapOf()
         
@@ -196,13 +236,13 @@ class FamilyMemberControllerApi(basePath: kotlin.String = "http://10.0.2.2:8050"
             query = localVariableQuery,
             headers = localVariableHeaders
         )
-        val response = request<Unit>(
+        val response = request<Tokens>(
             localVariableConfig,
             localVariableBody
         )
 
         return when (response.responseType) {
-            ResponseType.Success -> Unit
+            ResponseType.Success -> (response as Success<*>).data as Tokens
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")

@@ -1,9 +1,5 @@
 package io.swagger.client.infrastructure
 
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.JsonReader
-import com.squareup.moshi.JsonWriter
-import com.squareup.moshi.Moshi
 import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -12,9 +8,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files;
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.*
 import java.util.regex.Pattern
 
 open class ApiClient(val baseUrl: String) {
@@ -64,11 +57,7 @@ open class ApiClient(val baseUrl: String) {
 
             return requestBodyBuilder.build()
         }  else if(mediaType == JsonMediaType) {
-            val moshi: Moshi = Moshi.Builder()
-                .add(com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory())
-                .add(LocalDate::class.java, LocalDateAdapter().nullSafe())
-                .build()
-            return moshi.adapter(T::class.java).toJson(content)
+            return Serializer.moshi.adapter(T::class.java).toJson(content)
                 .toRequestBody(mediaType.toMediaTypeOrNull())
         } else if (mediaType == XmlMediaType) {
             TODO("xml not currently supported.")
@@ -94,11 +83,7 @@ open class ApiClient(val baseUrl: String) {
         }
 
 		if(isJsonMime(contentType)){
-            val moshi: Moshi = Moshi.Builder()
-                .add(com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory())
-                .add(LocalDate::class.java, LocalDateAdapter().nullSafe())
-                .build()
-            return moshi.adapter(T::class.java).fromJson(response.body?.source())
+            return Serializer.moshi.adapter(T::class.java).fromJson(response.body?.source())
         } else if(contentType.equals(String.javaClass)){
             return response.body.toString() as T
         } else {
@@ -135,9 +120,8 @@ open class ApiClient(val baseUrl: String) {
         }
 
         // TODO: support multiple contentType,accept options here.
-        val contentType = (headers[ContentType] as String).substringBefore(";")
-            .lowercase(Locale.getDefault())
-        val accept = (headers[Accept] as String).substringBefore(";").lowercase(Locale.getDefault())
+        val contentType = (headers[ContentType] as String).substringBefore(";").toLowerCase()
+        val accept = (headers[Accept] as String).substringBefore(";").toLowerCase()
 
         var request : Request.Builder =  when (requestConfig.method) {
             RequestMethod.DELETE -> Request.Builder().url(url).delete()
@@ -157,28 +141,28 @@ open class ApiClient(val baseUrl: String) {
         // TODO: handle specific mapping types. e.g. Map<int, Class<?>>
         when {
             response.isRedirect -> return Redirection(
-                    response.code,
+                response.code,
                     response.headers.toMultimap()
             )
             response.isInformational -> return Informational(
-                    response.message,
-                    response.code,
+                response.message,
+                response.code,
                     response.headers.toMultimap()
             )
             response.isSuccessful -> return Success(
                     responseBody(response, accept),
-                    response.code,
+                response.code,
                     response.headers.toMultimap()
             )
             response.isClientError -> return ClientError(
                     response.body?.string(),
-                    response.code,
+                response.code,
                     response.headers.toMultimap()
             )
             else -> return ServerError(
                     null,
                     response.body?.string(),
-                    response.code,
+                response.code,
                     response.headers.toMultimap()
             )
         }
@@ -230,30 +214,3 @@ open class ApiClient(val baseUrl: String) {
         return Files.createTempFile(prefix, suffix).toFile();
     }
 }
-
-//stack
-class LocalDateAdapter : JsonAdapter<LocalDate>(){
-    override fun toJson(writer: JsonWriter, value: LocalDate?) {
-        value?.let { writer?.value(it.format(formatter)) }
-
-    }
-
-    override fun fromJson(reader: JsonReader): LocalDate? {
-        return if (reader.peek() != JsonReader.Token.NULL) {
-            fromNonNullString(reader.nextString())
-        } else {
-            reader.nextNull<Any>()
-            null
-        }    }
-    private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    private fun fromNonNullString(nextString: String) : LocalDate = LocalDate.parse(nextString, formatter)
-
-}
-
-/*object Serializer {
-    @JvmStatic
-    val moshi: Moshi = Moshi.Builder()
-        .add(com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory())
-        .add(LocalDateTime::class.java, LocalDateTimeAdapter().nullSafe())
-        .build()
-}*/

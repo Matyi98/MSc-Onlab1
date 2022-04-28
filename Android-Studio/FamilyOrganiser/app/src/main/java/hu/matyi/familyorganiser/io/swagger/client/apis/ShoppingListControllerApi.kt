@@ -16,7 +16,7 @@ import io.swagger.client.models.ShoppingListGet
 
 import io.swagger.client.infrastructure.*
 
-class ShoppingListControllerApi(basePath: kotlin.String = "http://10.0.2.2:8050") : ApiClient(basePath) {
+class ShoppingListControllerApi(basePath: kotlin.String = "https://localhost:8050") : ApiClient(basePath) {
 
     /**
     * Adds a new entity.
@@ -241,6 +241,44 @@ class ShoppingListControllerApi(basePath: kotlin.String = "http://10.0.2.2:8050"
 
         return when (response.responseType) {
             ResponseType.Success -> (response as Success<*>).data as ShoppingListGet
+            ResponseType.Informational -> TODO()
+            ResponseType.Redirection -> TODO()
+            ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")
+            ResponseType.ServerError -> throw ServerException((response as ServerError<*>).message ?: "Server error")
+            else -> throw kotlin.IllegalStateException("Undefined ResponseType.")
+        }
+    }
+
+    /**
+    * Searching the lists owned by a specified family
+    * 
+    * @param familyId family-id 
+    * @return kotlin.Array<ShoppingListGet>
+    */
+    @Suppress("UNCHECKED_CAST")
+    fun searchByFamilyUsingGET(familyId: kotlin.Long) : kotlin.Array<ShoppingListGet> {
+        val localVariableBody: kotlin.Any? = null
+        val localVariableQuery: MultiValueMap = mapOf()
+        
+        val contentHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf()
+        val acceptsHeaders: kotlin.collections.Map<kotlin.String,kotlin.String> = mapOf("Accept" to "*/*")
+        val localVariableHeaders: kotlin.collections.MutableMap<kotlin.String,kotlin.String> = mutableMapOf()
+        localVariableHeaders.putAll(contentHeaders)
+        localVariableHeaders.putAll(acceptsHeaders)
+        
+        val localVariableConfig = RequestConfig(
+            RequestMethod.GET,
+            "/api/shopping-list/by-family/{family-id}".replace("{"+"family-id"+"}", "$familyId"),
+            query = localVariableQuery,
+            headers = localVariableHeaders
+        )
+        val response = request<kotlin.Array<ShoppingListGet>>(
+            localVariableConfig,
+            localVariableBody
+        )
+
+        return when (response.responseType) {
+            ResponseType.Success -> (response as Success<*>).data as kotlin.Array<ShoppingListGet>
             ResponseType.Informational -> TODO()
             ResponseType.Redirection -> TODO()
             ResponseType.ClientError -> throw ClientException((response as ClientError<*>).body as? String ?: "Client error")

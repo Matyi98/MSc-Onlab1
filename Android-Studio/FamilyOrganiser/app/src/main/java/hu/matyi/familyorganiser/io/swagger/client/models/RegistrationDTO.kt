@@ -22,5 +22,7 @@ data class RegistrationDTO (
     val uid: kotlin.String,
     val username: kotlin.String,
     val password: kotlin.String
-)
+) {
+
+}
 
