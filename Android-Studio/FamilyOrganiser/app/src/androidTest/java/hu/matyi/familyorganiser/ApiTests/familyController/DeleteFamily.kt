@@ -9,6 +9,7 @@ class DeleteFamily {
     val existingId : Long = 1
     @Test
     fun deleteFamilyNoErrorTest() {
-        FamilyControllerApi().deleteByIdUsingDELETE(2)
+        //FamilyControllerApi().deleteByIdUsingDELETE(2)
+          FamilyControllerApi().deleteByIdUsingDELETE(2)
     }
 }

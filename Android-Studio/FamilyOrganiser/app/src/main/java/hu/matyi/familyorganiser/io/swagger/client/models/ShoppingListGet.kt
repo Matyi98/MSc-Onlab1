@@ -29,7 +29,7 @@ data class ShoppingListGet (
     val fullPrice: kotlin.Int,
     val id: kotlin.Long,
     val location: kotlin.String,
-    val completedOn: java.time.LocalDateTime? = null,
+    val completedOn: java.time.LocalDate? = null,
     val items: kotlin.Array<GetShoppingListItem>? = null
 ) {
 

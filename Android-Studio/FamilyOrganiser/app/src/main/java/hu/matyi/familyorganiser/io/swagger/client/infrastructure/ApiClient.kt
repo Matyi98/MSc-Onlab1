@@ -1,5 +1,9 @@
 package io.swagger.client.infrastructure
 
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.JsonReader
+import com.squareup.moshi.JsonWriter
+import com.squareup.moshi.Moshi
 import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -8,6 +12,8 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files;
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.regex.Pattern
 
 open class ApiClient(val baseUrl: String) {
@@ -57,8 +63,14 @@ open class ApiClient(val baseUrl: String) {
 
             return requestBodyBuilder.build()
         }  else if(mediaType == JsonMediaType) {
-            return Serializer.moshi.adapter(T::class.java).toJson(content)
+            val moshi: Moshi = Moshi.Builder()
+                .add(com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory())
+                .add(LocalDate::class.java, LocalDateAdapter().nullSafe())
+                .build()
+            return moshi.adapter(T::class.java).toJson(content)
                 .toRequestBody(mediaType.toMediaTypeOrNull())
+        } else if (mediaType == XmlMediaType) {
+            TODO("xml not currently supported.")
         } else if (mediaType == XmlMediaType) {
             TODO("xml not currently supported.")
         }
@@ -83,7 +95,11 @@ open class ApiClient(val baseUrl: String) {
         }
 
 		if(isJsonMime(contentType)){
-            return Serializer.moshi.adapter(T::class.java).fromJson(response.body?.source())
+            val moshi: Moshi = Moshi.Builder()
+                .add(com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory())
+                .add(LocalDate::class.java, LocalDateAdapter().nullSafe())
+                .build()
+            return moshi.adapter(T::class.java).fromJson(response.body?.source())
         } else if(contentType.equals(String.javaClass)){
             return response.body.toString() as T
         } else {
@@ -213,4 +229,22 @@ open class ApiClient(val baseUrl: String) {
 
         return Files.createTempFile(prefix, suffix).toFile();
     }
+}
+
+class LocalDateAdapter : JsonAdapter<LocalDate>(){
+    override fun toJson(writer: JsonWriter, value: LocalDate?) {
+        value?.let { writer?.value(it.format(formatter)) }
+
+    }
+
+    override fun fromJson(reader: JsonReader): LocalDate? {
+        return if (reader.peek() != JsonReader.Token.NULL) {
+            fromNonNullString(reader.nextString())
+        } else {
+            reader.nextNull<Any>()
+            null
+        }    }
+    private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    private fun fromNonNullString(nextString: String) : LocalDate = LocalDate.parse(nextString, formatter)
+
 }

@@ -12,7 +12,7 @@ class RegistrationHandler(private val username: String, private val password: St
         GlobalScope.launch(Dispatchers.IO) {
            try {
                 FamilyMemberControllerApi().registerUsingPOST(RegistrationDTO("aaaaaaaa",username,password))
-                //System.out.println(FamilyMemberControllerApi().getEntitiesUsingGET1(2,5)[0].surname)
+                System.out.println(FamilyMemberControllerApi().getEntitiesUsingGET1(2,5)[0].firstName)
            }
             catch (e: Exception)
             {

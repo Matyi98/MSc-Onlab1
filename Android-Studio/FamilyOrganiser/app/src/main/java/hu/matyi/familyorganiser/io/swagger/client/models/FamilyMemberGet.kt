@@ -31,7 +31,7 @@ data class FamilyMemberGet (
     val id: kotlin.Long,
     val lastName: kotlin.String,
     val uid: kotlin.String,
-    val birthDate: java.time.LocalDateTime? = null,
+    val birthDate: java.time.LocalDate? = null,
     val family: FamilyPlain? = null,
     val photo: kotlin.String? = null,
     val username: kotlin.String? = null

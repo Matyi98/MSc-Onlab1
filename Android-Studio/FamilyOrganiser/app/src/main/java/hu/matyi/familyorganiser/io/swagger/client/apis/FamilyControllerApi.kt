@@ -16,7 +16,7 @@ import io.swagger.client.models.FamilyPlain
 
 import io.swagger.client.infrastructure.*
 
-class FamilyControllerApi(basePath: kotlin.String = "https://localhost:8050") : ApiClient(basePath) {
+class FamilyControllerApi(basePath: kotlin.String = "http://10.0.2.2:8050") : ApiClient(basePath) {
 
     /**
     * Adds a new entity.
