@@ -2,26 +2,35 @@ package hu.matyi.familyorganiser.views.loginForm
 
 import io.swagger.client.apis.FamilyMemberControllerApi
 import io.swagger.client.models.LoginDTO
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import io.swagger.client.models.Tokens
+import kotlinx.coroutines.*
 
-class LoginHandler(private var name: String, private var password: String) {
-
-
-
-    fun sendLoginRequest() : Boolean
-    {
-        GlobalScope.launch(Dispatchers.IO) {
+class LoginHandler() {
+    companion object Token {
+        var token: Tokens? = null
+    }
+    @DelicateCoroutinesApi
+    fun sendLoginRequest() : Boolean = runBlocking{
+        token = null
+        var successToken = false;
+        val job = GlobalScope.launch(Dispatchers.IO) {
             try {
                 val familyMemberControllersApi = FamilyMemberControllerApi()
-                familyMemberControllersApi.loginUsingPOST(LoginDTO(name, password))
+
+                token =
+                    familyMemberControllersApi.loginUsingPOST(LoginDTO(LoginModel.loginDTO.username, LoginModel.loginDTO.password))
             }
             catch (e: Exception)
             {
 
             }
+            successToken = false
+
+            if(token != null)
+                if(token!!.accessToken.isNotEmpty())
+                    successToken = true
         }
-        return name.isNotEmpty() && password.isNotEmpty()
+        job.join()
+        return@runBlocking LoginModel.loginDTO.username.isNotEmpty() && LoginModel.loginDTO.password.isNotEmpty() && successToken
     }
 }

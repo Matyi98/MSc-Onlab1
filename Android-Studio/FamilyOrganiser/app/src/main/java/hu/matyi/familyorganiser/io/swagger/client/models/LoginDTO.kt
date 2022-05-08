@@ -18,8 +18,8 @@ package io.swagger.client.models
  * @param password 
  */
 data class LoginDTO (
-    val username: kotlin.String,
-    val password: kotlin.String
+    var username: kotlin.String,
+    var password: kotlin.String
 ) {
 
 }
