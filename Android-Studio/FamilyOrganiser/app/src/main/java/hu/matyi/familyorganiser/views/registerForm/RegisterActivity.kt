@@ -18,13 +18,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import hu.matyi.familyorganiser.R
-import hu.matyi.familyorganiser.components.basicButton
-import hu.matyi.familyorganiser.components.passwordField
-import hu.matyi.familyorganiser.components.basicInputField
-import hu.matyi.familyorganiser.components.welcomText
+import hu.matyi.familyorganiser.components.*
 import hu.matyi.familyorganiser.ui.theme.FamilyOrganiserTheme
 import hu.matyi.familyorganiser.views.loginForm.LoginActivity
 import hu.matyi.familyorganiser.views.loginForm.LoginHandler
+import hu.matyi.familyorganiser.views.profilSettings.ProfilSettings
 
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,8 +69,9 @@ private fun Screen() {
                     var username = basicInputField(stringResource(R.string.username))
                     var password = passwordField()
                     var password2 = passwordField()
+
                     val intent = Intent(context, LoginActivity::class.java)
-                    basicButton(context = LocalContext.current, text =  stringResource(R.string.registrate), intent) { RegistrationHandler(username, password, password2).sendRegistrationRequest() }
+                    basicButton(context = LocalContext.current, text =  stringResource(R.string.registrate), intent, check = { RegistrationHandler(username, password, password2).sendRegistrationRequest() })
 
                 }
             }

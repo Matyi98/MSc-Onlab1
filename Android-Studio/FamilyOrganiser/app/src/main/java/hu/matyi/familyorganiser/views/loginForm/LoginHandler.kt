@@ -8,6 +8,7 @@ import kotlinx.coroutines.*
 class LoginHandler() {
     companion object Token {
         var token: Tokens? = null
+        var UID: String? = null
     }
     @DelicateCoroutinesApi
     fun sendLoginRequest() : Boolean = runBlocking{

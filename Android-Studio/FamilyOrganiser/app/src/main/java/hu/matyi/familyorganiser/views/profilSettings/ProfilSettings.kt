@@ -30,6 +30,15 @@ import android.content.Context.MODE_PRIVATE
 
 import android.content.SharedPreferences
 import hu.matyi.familyorganiser.views.familyMenu.FamilyMenuActivity
+import hu.matyi.familyorganiser.views.loginForm.LoginActivity
+import hu.matyi.familyorganiser.views.loginForm.LoginHandler
+import io.swagger.client.apis.FamilyMemberControllerApi
+import io.swagger.client.models.CreateFamilyMember
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 class ProfilSettings: ComponentActivity() {
@@ -64,20 +73,22 @@ private fun Screen() {
                         .fillMaxSize()
                         .padding(32.dp)) {
                     welcomText(stringResource(R.string.profilsettings_welcome_text))
-                    val surname = basicInputField(text = "Surname")
-                    val lastname = basicInputField(text = "Lastname")
-                    val email = basicInputField(text = "Email")
-                    val birthday = datePickerField()
+                    ProfilModel.createFamilyMember.firstName = basicInputField(text = "Surname")
+                    ProfilModel.createFamilyMember.lastName = basicInputField(text = "Lastname")
+                    ProfilModel.createFamilyMember.email = basicInputField(text = "Email")
+                    var stringDate = datePickerField()
+                    ProfilModel.createFamilyMember.birthDate = LocalDate.parse(stringDate, DateTimeFormatter.BASIC_ISO_DATE)
                     val editor: SharedPreferences.Editor =
                         context.getSharedPreferences("ProfilPreference", MODE_PRIVATE).edit()
 
-                        val intent1 = Intent(context, FamilyMenuActivity::class.java)
+                        val intent1 = Intent(context, LoginActivity::class.java)
                         basicButton(context = context, text = stringResource(R.string.save_and_exit), intent = intent1, extraFunction = {
-                            editor.putString("surname", surname)
-                            editor.putString("lastname", lastname)
-                            editor.putString("birthday", birthday)
-                            editor.putString("email", email)
+                            editor.putString("surname", ProfilModel.createFamilyMember.firstName)
+                            editor.putString("lastname", ProfilModel.createFamilyMember.lastName)
+                            editor.putString("birthday", stringDate)
+                            editor.putString("email", ProfilModel.createFamilyMember.email)
                             editor.apply()
+                            ProfilSettingsHandler().ProfilSettingsHandler()
                         })
                         basicButton(context = context, text = stringResource(R.string.cancel), intent = intent1 )
                     }
@@ -85,3 +96,4 @@ private fun Screen() {
             }
         }
     }
+

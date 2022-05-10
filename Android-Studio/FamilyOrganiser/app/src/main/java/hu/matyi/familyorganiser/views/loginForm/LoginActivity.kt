@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import hu.matyi.familyorganiser.R
 import hu.matyi.familyorganiser.components.*
 import hu.matyi.familyorganiser.views.familyMenu.FamilyMenuActivity
+import hu.matyi.familyorganiser.views.profilSettings.ProfilSettings
 import hu.matyi.familyorganiser.views.registerForm.RegisterActivity
 
 //https://www.youtube.com/watch?v=SZR04TKHDM4&t=257s
@@ -74,6 +75,8 @@ class LoginActivity : ComponentActivity() {
                                stringResource(R.string.registrate_button_text),
                                intent2
                            )
+                       val intent3 = Intent(context, ProfilSettings::class.java)
+                       settingsButton(context = LocalContext.current, intent = intent3)
                    }
                }
            }
