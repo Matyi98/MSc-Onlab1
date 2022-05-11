@@ -34,7 +34,7 @@ fun basicButton(context: Context, text: String, intent: Intent? = null, check: (
         },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp),
+            .padding(5.dp),
         enabled = true,
         border = BorderStroke(width = 1.dp, brush = SolidColor(Color.Blue)),
         shape = MaterialTheme.shapes.medium,

@@ -29,8 +29,8 @@ fun passwordField() : String {
         enabled = true,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp),
-        label = { Text(text = "Password", fontSize = 25.sp) },
+            .padding(5.dp),
+        label = { Text(text = "Password", fontSize = 15.sp) },
         visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         trailingIcon = {

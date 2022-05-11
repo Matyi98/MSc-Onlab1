@@ -77,7 +77,12 @@ private fun Screen() {
                     ProfilModel.createFamilyMember.lastName = basicInputField(text = "Lastname")
                     ProfilModel.createFamilyMember.email = basicInputField(text = "Email")
                     var stringDate = datePickerField()
-                    ProfilModel.createFamilyMember.birthDate = LocalDate.parse(stringDate, DateTimeFormatter.BASIC_ISO_DATE)
+                    var localDateDate = LocalDate.now()
+                    try {
+                        localDateDate =  LocalDate.parse(stringDate, DateTimeFormatter.BASIC_ISO_DATE)
+                    }catch (e :Exception){}
+
+                    ProfilModel.createFamilyMember.birthDate = localDateDate
                     val editor: SharedPreferences.Editor =
                         context.getSharedPreferences("ProfilPreference", MODE_PRIVATE).edit()
 

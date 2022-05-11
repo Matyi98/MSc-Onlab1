@@ -13,7 +13,7 @@ class ProfilSettingsHandler {
         GlobalScope.launch(Dispatchers.IO) {
             if (LoginHandler.UID != null) {
                 val familyMemberControllerApi = FamilyMemberControllerApi()
-                LoginHandler.UID =
+                ProfilModel.familyMemberGet =
                     familyMemberControllerApi.addEntityUsingPOST1(
                         CreateFamilyMember(
                             ProfilModel.createFamilyMember.firstName,
@@ -22,7 +22,8 @@ class ProfilSettingsHandler {
                             ProfilModel.createFamilyMember.photo,
                             ProfilModel.createFamilyMember.birthDate
                         )
-                    ).uid
+                    )
+                LoginHandler.UID = ProfilModel.familyMemberGet.uid
             } else {
                 val familyMemberControllerApi = FamilyMemberControllerApi()
                 familyMemberControllerApi.updateEntityByIdUsingPUT1(
@@ -33,7 +34,7 @@ class ProfilSettingsHandler {
                         ProfilModel.createFamilyMember.photo,
                         ProfilModel.createFamilyMember.birthDate
                     ),
-                    LoginHandler.UID!!.toLong()
+                    ProfilModel.familyMemberGet.id
                 ).toString()
             }
         }

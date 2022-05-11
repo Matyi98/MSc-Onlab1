@@ -1,9 +1,11 @@
 package hu.matyi.familyorganiser.views.loginForm
 
+import androidx.hilt.navigation.compose.hiltViewModel
 import io.swagger.client.apis.FamilyMemberControllerApi
 import io.swagger.client.models.LoginDTO
 import io.swagger.client.models.Tokens
 import kotlinx.coroutines.*
+
 
 class LoginHandler() {
     companion object Token {
@@ -11,15 +13,18 @@ class LoginHandler() {
         var UID: String? = null
     }
     @DelicateCoroutinesApi
-    fun sendLoginRequest() : Boolean = runBlocking{
+    fun sendLoginRequest(loginModel: LoginModel): Boolean {
         token = null
         var successToken = false;
-        val job = GlobalScope.launch(Dispatchers.IO) {
+        GlobalScope.launch(Dispatchers.IO) {
             try {
                 val familyMemberControllersApi = FamilyMemberControllerApi()
 
                 token =
-                    familyMemberControllersApi.loginUsingPOST(LoginDTO(LoginModel.loginDTO.username, LoginModel.loginDTO.password))
+                     loginModel.getLoginLiveDto().value?.let {
+                        LoginDTO(
+                            it.username, it.password)
+                    }?.let { familyMemberControllersApi.loginUsingPOST(it) }
             }
             catch (e: Exception)
             {
@@ -31,7 +36,8 @@ class LoginHandler() {
                 if(token!!.accessToken.isNotEmpty())
                     successToken = true
         }
-        job.join()
-        return@runBlocking LoginModel.loginDTO.username.isNotEmpty() && LoginModel.loginDTO.password.isNotEmpty() && successToken
+        return loginModel.getLoginLiveDto().value?.username?.isNotEmpty() == true
+        && loginModel.getLoginLiveDto().value?.password?.isNotEmpty() == true
+                && successToken
     }
 }

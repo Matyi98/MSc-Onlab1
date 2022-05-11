@@ -24,7 +24,7 @@ fun secondOptionButton(context: Context, text: String, intent: Intent) {
         },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp),
+            .padding(5.dp),
         enabled = true,
         colors = ButtonDefaults.buttonColors(backgroundColor = Color(R.color.teal_700)),
     )

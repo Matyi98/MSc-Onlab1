@@ -25,9 +25,9 @@ fun basicInputField(text: String) : String {
         onValueChange = { username = it },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp)
+            .padding(5.dp)
             .fillMaxWidth(),
-        label = { Text(text = text, fontSize = 25.sp) },
+        label = { Text(text = text, fontSize = 15.sp) },
         trailingIcon =
         {
             IconButton(onClick = {})
