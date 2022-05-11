@@ -11,9 +11,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 
-class RegistrationHandler(private val username: String, private val password: String, private val password2: String) {
-    fun sendRegistrationRequest() : Boolean = runBlocking{
-        val job = GlobalScope.launch(Dispatchers.IO) {
+class RegistrationHandler() {
+    fun sendRegistrationRequest(registerModel: RegisterModel) : Boolean {
+        GlobalScope.launch(Dispatchers.IO) {
            try {
                 if(LoginHandler.UID == null)
                 {
@@ -28,16 +28,21 @@ class RegistrationHandler(private val username: String, private val password: St
                                 null
                             )
                         ).uid
+                    registerModel.setUID(LoginHandler.UID?:"")
                 }
-                FamilyMemberControllerApi().registerUsingPOST(RegistrationDTO(LoginHandler.UID!!,username,password))
+           FamilyMemberControllerApi().registerUsingPOST(RegistrationDTO(LoginHandler.UID!!,
+               registerModel.getRegisterLiveDto().value?.username?:"",
+               registerModel.getRegisterLiveDto().value?.password?:""
+                   )
+           )
            }
             catch (e: Exception)
             {
                 System.out.println(e.message)
             }
         }
-        job.join()
-        return@runBlocking (password == password2 && password.isNotEmpty() && username.isNotEmpty())
+        return(registerModel.getRegisterLiveDto().value?.username?.isNotEmpty() == true &&
+                registerModel.getRegisterLiveDto().value?.password?.isNotEmpty() == true)
     }
 }
 

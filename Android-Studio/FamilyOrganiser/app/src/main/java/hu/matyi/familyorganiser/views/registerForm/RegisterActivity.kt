@@ -2,8 +2,8 @@ package hu.matyi.familyorganiser.views.registerForm
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,14 +17,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import hu.matyi.familyorganiser.R
 import hu.matyi.familyorganiser.components.*
 import hu.matyi.familyorganiser.ui.theme.FamilyOrganiserTheme
 import hu.matyi.familyorganiser.views.loginForm.LoginActivity
 import hu.matyi.familyorganiser.views.loginForm.LoginHandler
-import hu.matyi.familyorganiser.views.profilSettings.ProfilSettings
+import io.swagger.client.models.RegistrationDTO
 
-class RegisterActivity : ComponentActivity() {
+@AndroidEntryPoint
+class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -36,7 +39,7 @@ class RegisterActivity : ComponentActivity() {
 }
 
 @Composable
-private fun Screen() {
+private fun Screen(registerModel : RegisterModel = hiltViewModel()) {
     val context = LocalContext.current
     Scaffold(backgroundColor = Color.White)
     {
@@ -64,14 +67,12 @@ private fun Screen() {
                         .background(Color(R.color.teal_700))
                         .fillMaxSize()
                         .padding(32.dp)) {
-
                     welcomText(text = stringResource(R.string.registrate_welcome_text))
                     var username = basicInputField(stringResource(R.string.username))
                     var password = passwordField()
-                    var password2 = passwordField()
-
+                    registerModel.setRegisterLiveDto(RegistrationDTO(LoginHandler.UID?:"",username, password))
                     val intent = Intent(context, LoginActivity::class.java)
-                    basicButton(context = LocalContext.current, text =  stringResource(R.string.registrate), intent, check = { RegistrationHandler(username, password, password2).sendRegistrationRequest() })
+                    basicButton(context = LocalContext.current, text =  stringResource(R.string.registrate), intent, check = { RegistrationHandler().sendRegistrationRequest(registerModel) })
 
                 }
             }

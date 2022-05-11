@@ -8,34 +8,49 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class ProfilSettingsHandler {
-    fun ProfilSettingsHandler(
-    ) {
+    fun sendProfilSettingsRequest(profilModel: ProfilModel) {
         GlobalScope.launch(Dispatchers.IO) {
             if (LoginHandler.UID != null) {
                 val familyMemberControllerApi = FamilyMemberControllerApi()
-                ProfilModel.familyMemberGet =
+                try {
+
+
+                ProfilModel().setFamilyMemberLiveDto(
                     familyMemberControllerApi.addEntityUsingPOST1(
                         CreateFamilyMember(
-                            ProfilModel.createFamilyMember.firstName,
-                            ProfilModel.createFamilyMember.lastName,
-                            ProfilModel.createFamilyMember.email,
-                            ProfilModel.createFamilyMember.photo,
-                            ProfilModel.createFamilyMember.birthDate
+                            profilModel.getFamilyMemberLiveDTO().value?.firstName?:"",
+                            profilModel.getFamilyMemberLiveDTO().value?.lastName?:"",
+                            profilModel.getFamilyMemberLiveDTO().value?.email?:"",
+                            profilModel.getFamilyMemberLiveDTO().value?.photo,
+                            profilModel.getFamilyMemberLiveDTO().value?.birthDate
                         )
-                    )
-                LoginHandler.UID = ProfilModel.familyMemberGet.uid
+                    ))
+                }
+                catch (e : Exception)
+                {
+                    System.out.println("Error: "+e.message)
+                }
+                LoginHandler.UID = ProfilModel().getFamilyMemberLiveDTO().value?.uid?:""
+
             } else {
                 val familyMemberControllerApi = FamilyMemberControllerApi()
-                familyMemberControllerApi.updateEntityByIdUsingPUT1(
-                    CreateFamilyMember(
-                        ProfilModel.createFamilyMember.firstName,
-                        ProfilModel.createFamilyMember.lastName,
-                        ProfilModel.createFamilyMember.email,
-                        ProfilModel.createFamilyMember.photo,
-                        ProfilModel.createFamilyMember.birthDate
-                    ),
-                    ProfilModel.familyMemberGet.id
-                ).toString()
+                try {
+
+                    familyMemberControllerApi.updateEntityByIdUsingPUT1(
+                        CreateFamilyMember(
+                            profilModel.getFamilyMemberLiveDTO().value?.firstName ?: "",
+                            profilModel.getFamilyMemberLiveDTO().value?.lastName ?: "",
+                            profilModel.getFamilyMemberLiveDTO().value?.email ?: "",
+                            profilModel.getFamilyMemberLiveDTO().value?.photo,
+                            profilModel.getFamilyMemberLiveDTO().value?.birthDate
+                        ),
+                        profilModel.getFamilyMemberLiveDTO().value?.id ?: 0
+                    ).toString()
+                }
+                catch (e : Exception)
+                {
+                    System.out.println("Error: " + e.message)
+                }
             }
         }
     }

@@ -2,7 +2,6 @@ package hu.matyi.familyorganiser.views.loginForm
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
@@ -25,7 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import hu.matyi.familyorganiser.R
 import hu.matyi.familyorganiser.components.*
 import hu.matyi.familyorganiser.views.familyMenu.FamilyMenuActivity
-import hu.matyi.familyorganiser.views.profilSettings.ProfilSettings
+import hu.matyi.familyorganiser.views.profilSettings.ProfilSettingsActivity
 import hu.matyi.familyorganiser.views.registerForm.RegisterActivity
 import io.swagger.client.models.LoginDTO
 
@@ -96,7 +95,7 @@ class LoginActivity : AppCompatActivity() {
                        {
                            passwd = passwordField()
                        }
-                       LoginModel().setLoginLiveDto(LoginDTO(usrname, passwd))
+                       loginModel.setLoginLiveDto(LoginDTO(usrname, passwd))
 
 
                        /*Login button*/
@@ -123,7 +122,7 @@ class LoginActivity : AppCompatActivity() {
                        /*Settings button*/
                        Box(Modifier.weight(0.2f))
                        {
-                           val intent3 = Intent(context, ProfilSettings::class.java)
+                           val intent3 = Intent(context, ProfilSettingsActivity::class.java)
                            settingsButton(context = LocalContext.current, intent = intent3)
                        }
                    }

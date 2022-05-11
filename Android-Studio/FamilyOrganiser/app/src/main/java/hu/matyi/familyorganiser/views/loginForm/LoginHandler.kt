@@ -7,24 +7,20 @@ import io.swagger.client.models.Tokens
 import kotlinx.coroutines.*
 
 
-class LoginHandler() {
+class LoginHandler {
     companion object Token {
         var token: Tokens? = null
         var UID: String? = null
     }
     @DelicateCoroutinesApi
     fun sendLoginRequest(loginModel: LoginModel): Boolean {
-        token = null
-        var successToken = false;
+        var successToken : Boolean = true
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 val familyMemberControllersApi = FamilyMemberControllerApi()
 
-                token =
-                     loginModel.getLoginLiveDto().value?.let {
-                        LoginDTO(
-                            it.username, it.password)
-                    }?.let { familyMemberControllersApi.loginUsingPOST(it) }
+                token = familyMemberControllersApi.loginUsingPOST(LoginDTO(loginModel.getLoginLiveDto().value?.username?:"",
+                    loginModel.getLoginLiveDto().value?.password?:""))
             }
             catch (e: Exception)
             {

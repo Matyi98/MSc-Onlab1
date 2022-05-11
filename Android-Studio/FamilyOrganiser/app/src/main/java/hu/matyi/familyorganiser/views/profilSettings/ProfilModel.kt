@@ -1,16 +1,31 @@
 package hu.matyi.familyorganiser.views.profilSettings
 
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.swagger.client.models.CreateFamilyMember
 import io.swagger.client.models.FamilyMemberGet
 import io.swagger.client.models.LoginDTO
 import java.time.LocalDate
+import javax.inject.Inject
 
-public class ProfilModel()
+@HiltViewModel
+class ProfilModel @Inject constructor() : ViewModel()
 {
-    companion object {
-        var createFamilyMember = CreateFamilyMember("","","",null, LocalDate.now(),0)
-        var familyMemberGet = FamilyMemberGet("","",0,"","0", LocalDate.now(),null,null,"")
+    private val familyMemberLiveDTO = MutableLiveData<FamilyMemberGet>(null)
+    fun getFamilyMemberLiveDTO() = familyMemberLiveDTO;
+    fun setFamilyMemberLiveDto(familyMemberGet: FamilyMemberGet)
+    {
+        familyMemberLiveDTO.value = familyMemberGet
     }
+
+    private val createFamilyMemberLiveDTO = MutableLiveData<CreateFamilyMember>(null)
+    fun getcreateFamilyMemberLiveDTO() = createFamilyMemberLiveDTO;
+    fun setcreateFamilyMemberLiveDto(createFamilyMemberGet: CreateFamilyMember)
+    {
+        createFamilyMemberLiveDTO.value = createFamilyMemberGet
+    }
+
 }
 
 

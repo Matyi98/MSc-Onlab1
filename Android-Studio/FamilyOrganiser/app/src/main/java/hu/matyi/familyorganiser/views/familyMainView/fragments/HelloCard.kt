@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import hu.matyi.familyorganiser.R
 import hu.matyi.familyorganiser.components.settingsButton
 import hu.matyi.familyorganiser.components.welcomText
-import hu.matyi.familyorganiser.views.profilSettings.ProfilSettings
+import hu.matyi.familyorganiser.views.profilSettings.ProfilSettingsActivity
 import java.io.File
 import java.io.IOException
 
@@ -66,7 +66,7 @@ fun helloCard(context: Context, surname: String?) {
                             .border(2.dp, Color.Gray, CircleShape)
                     )
                 }
-                val intent = Intent(context, ProfilSettings::class.java)
+                val intent = Intent(context, ProfilSettingsActivity::class.java)
                 settingsButton(context = context, intent = intent)
             }
 

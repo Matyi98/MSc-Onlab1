@@ -17,8 +17,3 @@ class LoginModel @Inject constructor(): ViewModel() {
             loginLiveDTO.value = loginDto
         }
 }
-
-@HiltAndroidApp
-class LoginApplication : Application()
-
-//entry point, manifest, = HiltViewModel()

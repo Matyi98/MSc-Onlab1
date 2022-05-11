@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:name=".views.loginForm.LoginApplication"
+        android:name=".HiltApplication"
         android:allowBackup="true"
         android:icon="@mipmap/family_logo"
         android:label="@string/app_name"
@@ -17,6 +17,7 @@
 
         <activity
             android:name = "hu.matyi.familyorganiser.views.loginForm.LoginActivity"
+
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.FamilyOrganiser.NoActionBar">
@@ -65,7 +66,7 @@
         </activity>
 
         <activity
-            android:name=".views.profilSettings.ProfilSettings"
+            android:name=".views.profilSettings.ProfilSettingsActivity"
             android:exported="true"
             >
             <!--Default Intent Filter-->

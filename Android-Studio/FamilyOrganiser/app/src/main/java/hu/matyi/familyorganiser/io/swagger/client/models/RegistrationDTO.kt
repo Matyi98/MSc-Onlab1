@@ -19,7 +19,7 @@ package io.swagger.client.models
  * @param password 
  */
 data class RegistrationDTO (
-    val uid: kotlin.String,
+    var uid: kotlin.String,
     val username: kotlin.String,
     val password: kotlin.String
 ) {
