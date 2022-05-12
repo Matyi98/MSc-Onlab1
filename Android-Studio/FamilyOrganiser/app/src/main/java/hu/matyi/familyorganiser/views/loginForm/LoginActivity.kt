@@ -65,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
                Card(
                    Modifier
                        .weight(0.8f)
-                       .padding(2.dp),
+                       .padding(8.dp),
                    shape = RoundedCornerShape(20.dp)
                )
                {
@@ -73,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
                        Modifier
                            .background(Color(R.color.teal_700))
                            .fillMaxSize()
-                           .padding(4.dp)
+                           .padding(16.dp)
                    ) {
 
 

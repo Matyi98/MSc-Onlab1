@@ -46,33 +46,74 @@ private fun Screen(registerModel : RegisterModel = hiltViewModel()) {
         Column(
             Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top)
+            verticalArrangement = Arrangement.Top
+        )
         {
-            Image(painter = painterResource(
-                id = R.drawable.register),
+            Image(
+                painter = painterResource(
+                    id = R.drawable.register
+                ),
                 contentDescription = "App Theme",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(0.5f)
+                    .weight(0.125f)
             )
             Card(
                 Modifier
-                    .weight(2f)
+                    .weight(0.875f)
                     .padding(8.dp),
-                shape = RoundedCornerShape(32.dp)
+                shape = RoundedCornerShape(20.dp)
             )
             {
                 Column(
                     Modifier
                         .background(Color(R.color.teal_700))
                         .fillMaxSize()
-                        .padding(32.dp)) {
-                    welcomText(text = stringResource(R.string.registrate_welcome_text))
-                    var username = basicInputField(stringResource(R.string.username))
-                    var password = passwordField()
-                    registerModel.setRegisterLiveDto(RegistrationDTO(LoginHandler.UID?:"",username, password))
+                        .padding(16.dp)
+                ) {
+
+
+                    /* Welcom text*/
+                    Box(Modifier.weight(0.25f))
+                    {
+                        welcomText(text = stringResource(R.string.registrate_welcome_text))
+                    }
+                    var username = ""
+
+
+                    /*Username and password fields*/
+                    Box(Modifier.weight(0.25f))
+                    {
+                        username = basicInputField(stringResource(R.string.username))
+                    }
+                    var password = ""
+                    Box(Modifier.weight(0.25f))
+                    {
+                        password = passwordField()
+                    }
+
+
+                    /*Configuring the model*/
+                    registerModel.setRegisterLiveDto(
+                        RegistrationDTO(
+                            LoginHandler.UID ?: "",
+                            username,
+                            password
+                        )
+                    )
+
+                    /* Building up the button*/
                     val intent = Intent(context, LoginActivity::class.java)
-                    basicButton(context = LocalContext.current, text =  stringResource(R.string.registrate), intent, check = { RegistrationHandler().sendRegistrationRequest(registerModel) })
+                    Box(Modifier.weight(0.25f))
+                    {
+                        basicButton(
+                            context = LocalContext.current,
+                            text = stringResource(R.string.registrate),
+                            intent,
+
+                            /*Invoke the registration handler function with the builded up model*/
+                            check = { RegistrationHandler().sendRegistrationRequest(registerModel) })
+                    }
 
                 }
             }
